@@ -1,0 +1,36 @@
+/*HEADER*/
+
+header{
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+header p{
+    margin-bottom: 10;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 750px;
+    width: 100%;
+}
+
+.form-container img {
+    width: 350px;
+}
+
+.btn-custom {
+    background-color: #6c5ce7;
+    color: white;
+}

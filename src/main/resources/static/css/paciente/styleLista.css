@@ -1,0 +1,78 @@
+/* 1. Fundo do Body (Mantido como você enviou) */
+        body {
+            background-image: url('/img/ImgHospital.jpg'); /* Imagem de fundo */
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-attachment: fixed; 
+            background-position: center center;
+            min-height: 100vh;
+            height: 100vh;
+        }
+    
+        /* 2. Estilo para o Card (MODIFICADO) */
+        .patient-card {
+            border-radius: 12px; 
+            border: none; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden; 
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        /* 3. Cabeçalho do Card (MODIFICADO) */
+        .patient-card .card-header {
+            background-color: transparent; /* Remove o fundo branco sólido */
+            /* Troca a borda sólida por uma semi-transparente */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
+            padding: 1.5rem;
+        }
+    
+        /* 4. Corpo do Card (MODIFICADO) */
+        .patient-card .card-body {
+            background-color: transparent; /* Garante que o corpo também seja transparente */
+            padding: 1.5rem;
+        }
+        
+        /* 5. Cabeçalho da Tabela (MODIFICADO) */
+        .table thead th {
+             background-color: transparent; /* Remove o fundo cinza sólido */
+             color: #343a40; /* Texto mais escuro para ler contra a imagem */
+             border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Linha separadora mais forte */
+             font-weight: 600; 
+        }
+    
+        /* 6. Corpo da Tabela (MODIFICADO) */
+        .table tbody td {
+             vertical-align: middle;
+             color: #212529; /* Garante que o texto da tabela seja escuro */
+             /* Adiciona uma linha separadora sutil entre as linhas */
+             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* 7. REGRAS NOVAS: Sobrescrevendo o Bootstrap (MUITO IMPORTANTE) */
+        .table {
+            /* Remove o fundo padrão da tabela */
+            --bs-table-bg: transparent; 
+            /* Remove o fundo das listras (table-striped) */
+            --bs-table-striped-bg: transparent; 
+        }
+        
+        .table-hover > tbody > tr:hover > * {
+             /* Adiciona um fundo semi-transparente sutil no hover */
+            --bs-table-hover-bg: rgba(0, 0, 0, 0.06); 
+            color: #000; /* Escurece o texto no hover */
+        }
+    
+        /* 8. Estilos de Endereço e Borda (Mantidos) */
+        .table td.address-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .table-responsive {
+            border: none; 
+        }
+        

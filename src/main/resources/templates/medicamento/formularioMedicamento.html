@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title
+      th:text="${medicamento.idMedicamento != null ? 'Editar Medicamento' : 'Cadastrar Medicamento'}"
+    ></title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" th:href="@{/css/medicamento/styleForm.css}" />
+  </head>
+
+  <body class="bg-light">
+    <div class="container my-5">
+      <div class="card shadow-lg p-4 mx-auto" style="max-width: 550px">
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h2 class="text-success">
+              <i class="fas fa-pills me-2"></i>
+              <span
+                th:text="${medicamento.idMedicamento != null ? 'Editar Medicamento' : 'Cadastrar Novo Medicamento'}"
+              ></span>
+            </h2>
+          </div>
+
+          <div
+            th:if="${mensagemSucesso}"
+            class="alert alert-success alert-dismissible fade show"
+            role="alert"
+          >
+            <span th:text="${mensagemSucesso}"></span>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div
+            th:if="${mensagemErro}"
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            <span th:text="${mensagemErro}"></span>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form
+            th:action="@{/medicamentos/salvar}"
+            method="POST"
+            th:object="${medicamento}"
+          >
+            <input type="hidden" th:field="*{idMedicamento}" />
+
+            <div class="mb-3">
+              <label for="nomeMedicamento" class="form-label"
+                ><i class="fas fa-file-signature me-1"></i> Nome do
+                Medicamento:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="nomeMedicamento"
+                th:field="*{nomeMedicamento}"
+                required
+                placeholder="Ex: Paracetamol"
+                maxlength="40"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="dosagemMedicamento" class="form-label"
+                ><i class="fas fa-flask me-1"></i> Dosagem:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="dosagemMedicamento"
+                th:field="*{dosagemMedicamento}"
+                required
+                placeholder="Ex: 500mg"
+                maxlength="20"
+              />
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+              <a
+                th:href="@{/medicamentos/listar}"
+                class="btn btn-secondary me-2"
+                ><i class="fas fa-times me-1"></i> Cancelar</a
+              >
+              <button type="submit" class="btn btn-success">
+                <i class="fas fa-save me-1"></i> Salvar Medicamento
+              </button>
+            </div>
+          </form>
+
+          <div class="text-center mt-4 pt-3 border-top">
+            <a
+              th:href="@{/medicamentos/listar}"
+              class="btn btn-outline-success btn-sm"
+              >Voltar à lista</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

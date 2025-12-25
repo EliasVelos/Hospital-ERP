@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Consultas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/consulta/styleLista.css}">
+    
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <!-- Novo card com o estilo de glassmorphism CLARO -->
+    <div class="card patient-card shadow-lg"> 
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+             <!-- Título com o texto padrão escuro do card, apenas o ícone é azul -->
+             <h2 class="h4 mb-0"><i class="fas fa-list-alt me-2 text-info"></i> Lista de Consultas Agendadas</h2>
+             
+             <div class="d-flex align-items-center">
+                 <a th:href="@{/consultas/criar}" class="btn btn-primary shadow-sm me-3"><i class="fas fa-plus-circle me-1"></i> Nova Consulta</a>
+                 
+                 <div class="input-group" style="max-width: 300px;">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="filtroInput" class="form-control" placeholder="Pesquisar...">
+                    <button class="btn btn-outline-secondary" type="button" onclick="limparFiltro()"><i class="fas fa-times"></i></button>
+                 </div>
+             </div>
+        </div>
+        
+        <div class="card-body">
+
+            <!-- Alertas (Mantidos) -->
+            <div th:if="${mensagemSucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${mensagemSucesso}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div th:if="${mensagemErro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span th:text="${mensagemErro}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+            <!-- Conteúdo da Tabela -->
+            <div class="table-responsive">
+                <!-- Classes table-striped e table-hover agora usam a transparência definida no CSS -->
+                <table class="table table-striped table-hover" id="tabelaConsultas">
+                    <thead>
+    <tr>
+        <th class="text-center">ID</th>
+        <th><i class="far fa-calendar-alt me-1"></i> Data e Hora</th>
+        <th><i class="fas fa-wheelchair me-1"></i> Paciente</th>
+        <th><i class="fas fa-stethoscope me-1"></i> Médico</th>
+        <th>Observações</th>
+        <th>Status</th> <!-- ADICIONADO -->
+        <th class="text-center">Ações</th>
+    </tr>
+</thead>
+
+<tbody>
+<tr th:each="consulta : ${consultas}">
+    <td class="text-center" th:text="${consulta.idConsulta}"></td>
+    <td th:text="${#temporals.format(consulta.dataehoraConsulta, 'dd/MM/yyyy HH:mm')}"></td>
+    <td th:text="${consulta.paciente.nomePaciente}"></td>
+    <td th:text="${consulta.medico.nomeMedico}"></td>
+    <td th:text="${consulta.observacoesConsulta}"></td>
+
+    <!-- STATUS DA CONSULTA -->
+    <td>
+        <span th:text="${consulta.statusConsulta}"
+              th:classappend="${consulta.statusConsulta == 'ATENDIDA'} 
+                  ? 'badge bg-success' 
+                  : 'badge bg-warning text-dark'">
+        </span>
+    </td>
+
+    <td class="text-center" style="min-width: 220px;">
+
+        <!-- Botão Registrar ou Ver Atendimento -->
+        <a th:if="${consulta.statusConsulta == 'AGENDADA' and consulta.atendimento == null}"
+       th:href="@{/atendimento/iniciar/{id}(id=${consulta.idConsulta})}"
+       class="btn btn-info btn-sm me-1">
+        <i class="fas fa-file-medical"></i> Registrar Atendimento
+    </a>
+
+    <a th:if="${consulta.statusConsulta == 'ATENDIDA' and consulta.atendimento != null}"
+    th:href="@{/atendimento/detalhes/{idAtendimento}(idAtendimento=${consulta.atendimento.idAtendimento})}"
+    class="btn btn-primary btn-sm me-1">
+        <i class="fas fa-notes-medical"></i> Ver Atendimento
+    </a>
+
+        <a th:href="@{/consultas/editar/{id}(id=${consulta.idConsulta})}"
+           class="btn btn-warning btn-sm me-1">
+           <i class="fas fa-edit"></i> Editar
+        </a>
+
+        <a th:href="@{/consultas/excluir/{id}(id=${consulta.idConsulta})}"
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('Deseja realmente excluir esta consulta?')">
+           <i class="fas fa-trash-alt"></i> Excluir
+        </a>
+
+    </td>
+</tr>
+</tbody>
+                </table>
+            </div>
+
+            <!-- Botão Voltar -->
+            <div align="center" class="mt-4">
+                <a th:href="@{${session.userHomeUrl}}" class="btn btn-outline-info"><i class="fas fa-home me-1"></i> Voltar à página inicial</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/consulta/lista.js}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

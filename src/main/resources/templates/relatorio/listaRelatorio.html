@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Relatórios Administrativos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/relatorio/styleLista.css}">
+    
+</head>
+
+<body class="bg-light">
+    <div class="container my-5 table-responsive">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="header-color mb-0">
+                <i class="fas fa-chart-line me-2"></i> Relatórios Administrativos
+            </h2>
+             <a th:href="@{${session.userHomeUrl}}" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-1"></i> Voltar à página inicial
+            </a>
+        </div>
+        
+        <div th:if="${mensagemSucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensagemSucesso}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${mensagemErro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${mensagemErro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            
+            <form th:action="@{/relatorios/gerar}" method="POST">
+                <button type="submit" class="btn btn-primary-custom btn-lg shadow-sm">
+                    <i class="fas fa-file-alt me-2"></i> Gerar Novo Relatório
+                </button>
+            </form>
+
+            <div class="input-group" style="max-width: 450px;">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" id="filtroInput" class="form-control" placeholder="Pesquisar por Título ou ID...">
+                <button class="btn btn-outline-secondary" type="button" onclick="limparFiltro()"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-light table-striped table-hover table-bordered shadow-sm" id="tabelaRelatorios">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Título</th>
+                        <th class="text-center">Data de Geração</th>
+                        <th class="text-center">Período Abrangido</th>
+                        <th class="text-center" style="min-width: 180px;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="relatorio : ${relatorios}">
+                        <td class="text-center" th:text="${relatorio.idRelatorio}">1</td>
+                        <td th:text="${relatorio.tituloRelatorio}">Relatório Mensal de Outubro</td>
+                        <td class="text-center" th:text="${#temporals.format(relatorio.dataGeracao, 'dd/MM/yyyy HH:mm')}"></td>
+
+<td class="text-center">
+    <span th:text="${#temporals.format(relatorio.dataInicioPeriodo, 'dd/MM/yyyy HH:mm')}"></span> 
+    a 
+    <span th:text="${#temporals.format(relatorio.dataFimPeriodo, 'dd/MM/yyyy HH:mm')}"></span>
+</td>
+                        <td class="text-center d-flex justify-content-center gap-2">
+                            <a th:href="@{/relatorios/detalhes/{id}(id=${relatorio.idRelatorio})}"
+                                class="btn btn-sm btn-info-custom" title="Visualizar"><i class="fas fa-eye"></i></a>
+                            
+                            <a th:href="@{/relatorios/excluir/{id}(id=${relatorio.idRelatorio})}" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Deseja realmente excluir este relatório?')" title="Excluir">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot th:if="${#lists.isEmpty(relatorios)}">
+                    <tr>
+                        <td colspan="5" class="text-center p-4 text-muted">
+                            <i class="fas fa-search-minus me-1"></i> Nenhum relatório gerado ainda.
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <script th:src="@{/js/relatorio/lista.js}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

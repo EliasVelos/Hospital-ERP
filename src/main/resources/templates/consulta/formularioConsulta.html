@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${consulta.idConsulta != null ? 'Editar Consulta' : 'Nova Consulta'}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/consulta/styleForm.css}">
+</head>
+<body>
+
+<div class="container mt-5">
+    
+    <!-- Aplicado o estilo patient-card CLARO -->
+    <div class="card patient-card shadow-lg p-4">
+        
+        <!-- Título com texto escuro e ícone azul -->
+        <h2 class="text-center mb-4">
+            <i class="fas fa-calendar-check me-2 text-info"></i> 
+            <span th:text="${consulta.idConsulta != null ? 'Editar Agendamento' : 'Novo Agendamento de Consulta'}"></span>
+        </h2>
+        
+        <!-- Alerta padrão (o fundo claro do card garante a visibilidade) -->
+        <div th:if="${mensagemErro}" class="alert alert-danger" role="alert">
+            <span th:text="${mensagemErro}"></span>
+        </div>
+
+        <form th:action="@{/consultas/salvar}" th:object="${consulta}" method="post" class="mt-3">
+
+            <input type="hidden" th:field="*{idConsulta}" />
+
+            <div class="mb-3">
+                <label for="dataehoraConsulta" class="form-label"><i class="far fa-clock me-1"></i> Data e Hora</label>
+                <!-- Campos estilizados para o tema claro -->
+                <input type="datetime-local" class="form-control" th:field="*{dataehoraConsulta}" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="paciente" class="form-label"><i class="fas fa-user me-1"></i> Paciente</label>
+                <select class="form-select" th:field="*{paciente}" required>
+                    <option value="">Selecione o paciente</option>
+                    <option th:each="pac : ${pacientes}" 
+                            th:value="${pac.idPaciente}" 
+                            th:text="${pac.nomePaciente}"
+                            th:selected="${consulta.paciente != null && consulta.paciente.idPaciente == pac.idPaciente}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="medico" class="form-label"><i class="fas fa-user-md me-1"></i> Médico</label>
+                <select class="form-select" th:field="*{medico}" required>
+                    <option value="">Selecione o médico</option>
+                    <option th:each="med : ${medicos}" 
+                            th:value="${med.idMedico}" 
+                            th:text="${med.nomeMedico} + ' (' + ${med.especialidadeMedico} + ')'"
+                            th:selected="${consulta.medico != null && consulta.medico.idMedico == med.idMedico}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="observacoesConsulta" class="form-label"><i class="fas fa-notes-medical me-1"></i> Observações</label>
+                <textarea class="form-control" th:field="*{observacoesConsulta}" rows="3"></textarea>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <a th:href="@{/consultas/listar}" class="btn btn-secondary me-2"><i class="fas fa-times-circle me-1"></i> Cancelar</a>
+                <button type="submit" class="btn btn-success"><i class="fas fa-save me-1"></i> Salvar Agendamento</button>
+            </div>
+        </form>
+
+        <!-- Botão de voltar ajustado para o tema claro -->
+        <div align="center" class="mt-4">
+            <a th:href="@{/consultas/listar}" class="btn btn-outline-info btn-sm">Voltar à lista</a>
+        </div>
+        
+    </div>
+</div>
+
+</body>
+</html>

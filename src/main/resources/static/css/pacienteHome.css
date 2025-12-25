@@ -1,0 +1,105 @@
+ /* --- ESTILO GERAL --- */
+ body {
+    background-color: #f4f7f6; /* Cinza muito suave, quase branco */
+    font-family: 'Lato', sans-serif;
+    padding-top: 70px; /* Espaço para a navbar fixa */
+}
+
+/* --- NAVBAR --- */
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.navbar-brand {
+    color: #0d6efd !important; /* Azul Hospitalar */
+    font-weight: 700;
+}
+
+/* --- HERO SECTION (BANNER) --- */
+.patient-hero {
+    /* LOCAL DA IMAGEM 1: Fundo do banner principal */
+    background-image: url('/img/hospitalPaciente.jpg'); 
+    background-size: cover;
+    background-position: center 30%; /* Ajusta o foco da imagem */
+    border-radius: 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+}
+
+.hero-overlay {
+    background: linear-gradient(90deg, rgba(13, 110, 253, 0.9) 0%, rgba(13, 110, 253, 0.6) 60%, rgba(255,255,255,0) 100%);
+    padding: 60px 40px;
+    height: 100%;
+}
+
+/* --- CARDS --- */
+.action-card {
+    border: none;
+    border-radius: 15px;
+    background: #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.action-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(13, 110, 253, 0.15);
+    cursor: pointer;
+}
+
+.action-card .icon-bg {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    font-size: 8rem;
+    opacity: 0.05;
+    transform: rotate(-15deg);
+    transition: all 0.3s;
+}
+
+.action-card:hover .icon-bg {
+    transform: rotate(0deg) scale(1.1);
+    opacity: 0.1;
+}
+
+.card-icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+/* Cores específicas para cada card */
+.theme-primary .card-icon-circle { background-color: #e7f1ff; color: #0d6efd; }
+.theme-success .card-icon-circle { background-color: #d1e7dd; color: #198754; }
+.theme-info .card-icon-circle { background-color: #cff4fc; color: #0dcaf0; }
+.theme-warning .card-icon-circle { background-color: #fff3cd; color: #ffc107; }
+
+/* --- RODAPÉ --- */
+.footer-patient {
+    margin-top: 60px;
+    padding: 30px 0;
+    background-color: #ffffff;
+    color: #6c757d;
+    border-top: 1px solid #eaeaea;
+}
+
+/* --- UTILS --- */
+.welcome-text h1 { font-weight: 700; letter-spacing: -1px; }
+.section-title { 
+    font-size: 1.1rem; 
+    font-weight: 700; 
+    color: #8898aa; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}

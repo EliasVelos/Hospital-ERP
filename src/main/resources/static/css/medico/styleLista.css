@@ -1,0 +1,16 @@
+/* Estilo para destacar o link de novo cadastro */
+.btn-add-medico {
+    background-color: #dc3545; /* Cor da sua marca (vermelho do danger) */
+    border-color: #dc3545;
+    color: white;
+    transition: background-color 0.3s;
+}
+.btn-add-medico:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    color: white;
+}
+/* Estilo para a barra de cabeçalho da tabela */
+.bg-danger.text-white {
+    background-color: #dc3545 !important;
+}

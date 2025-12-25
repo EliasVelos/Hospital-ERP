@@ -1,0 +1,13 @@
+body { background-color: #f4f7f6; padding-top: 56px; }
+        .navbar { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .card-link { text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; }
+        .card-link:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .kpi-card h5 { font-size: 1.1rem; color: #6c757d; }
+        .kpi-card .display-4 { font-weight: 700 !important; }
+        .welcome-banner-medico {
+            /* [IMAGEM AQUI] Imagem profissional e sutil (ex: estetoscópio, gráfico) */
+            background-image: url('/img/medico-banner.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .welcome-overlay { background-color: rgba(0, 86, 179, 0.7); backdrop-filter: blur(2px); }

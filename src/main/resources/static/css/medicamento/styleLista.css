@@ -1,0 +1,127 @@
+/* --- 1. Configuração do Fundo (Body) --- */
+body {
+    /* Sua imagem de fundo, mas agora com propriedades profissionais */
+    background-image: url('/img/medicamento.png');
+    background-size: cover;       /* Faz a imagem cobrir toda a tela */
+    background-position: center;  /* Centraliza a imagem */
+    background-attachment: fixed; /* Fixa a imagem para que ela não role com o conteúdo */
+    background-repeat: no-repeat;
+    
+    /* O 'bg-light' do seu HTML já fornece uma cor de fallback, o que é ótimo. */
+    
+    /* Adiciona um preenchimento global para o conteúdo não colar nas bordas */
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* --- 2. O Cartão Principal (Container da Lista) --- */
+/* Esta é a "lista com fundo transparente" que você pediu.
+   Vamos estilizar o container principal da página. */
+.container.my-5 {
+    /* A MÁGICA: Fundo branco semi-transparente */
+    background-color: rgba(255, 255, 255, 0.80); /* 97% opaco. Muito sutil, mas elegante. */
+    
+    /* Efeito "flutuante" profissional */
+    border-radius: 1rem; /* Bordas arredondadas (16px) */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    
+    /* Espaçamento interno (padding) para o conteúdo "respirar" */
+    padding: 2.5rem;
+    
+    /* Garante que as margens do HTML sejam aplicadas */
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+}
+
+/* --- 3. Ajustes na Tabela --- */
+
+/* O 'wrapper' da tabela precisa ter bordas arredondadas */
+.table-responsive {
+    border-radius: 0.5rem; /* 8px */
+}
+
+.table {
+    margin-bottom: 0; /* Remove a margem padrão do Bootstrap */
+    
+    /* Garante que o fundo da tabela (listras, etc.) seja opaco */
+    background-color: #ffffff; 
+    
+    /* Adiciona uma borda sutil à tabela inteira */
+    border: 1px solid #dee2e6;
+}
+
+/* --- 4. Manter e Melhorar Suas Customizações --- */
+
+/* Cabeçalho da Tabela */
+.table > thead.bg-success {
+    background-color: #198754 !important;
+    color: #ffffff !important;
+}
+.table > thead th {
+     font-weight: 600; /* Texto do cabeçalho em negrito */
+     vertical-align: middle; /* Alinha o texto verticalmente */
+}
+
+/* Badges (Selos de Estoque/Validade) */
+.badge {
+    font-size: 0.85em;
+    padding: 0.4em 0.7em;
+    font-weight: 600;
+    
+    /* Sombra sutil para "saltar" da tela */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* --- 5. Melhorias de UI (Profissionalismo) --- */
+
+/* Título da Página */
+h2.text-success {
+    font-weight: 700;
+    /* Um tom de verde mais sóbrio e escuro para o título */
+    color: #1a5e3c !important; 
+}
+
+/* Botões Principais (Cadastrar, Movimentar, Voltar) */
+.btn {
+    border-radius: 0.375rem; /* 6px */
+    font-weight: 500;
+    /* Adiciona uma sombra sutil aos botões */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+    /* Transição suave para todos os efeitos */
+    transition: all 0.2s ease-in-out;
+}
+.btn:hover {
+     /* Efeito de "levantar" ao passar o mouse */
+     transform: translateY(-2px);
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.btn:active {
+    transform: translateY(0); /* Retorna ao clicar */
+}
+
+/* Botões de Ação na Tabela (Editar/Excluir) */
+/* Removemos os efeitos de sombra e 'levantar' para não poluir a tabela */
+.btn-sm.btn-outline-primary,
+.btn-sm.btn-outline-danger {
+    box-shadow: none;
+}
+.btn-sm.btn-outline-primary:hover {
+    transform: none; 
+    box-shadow: none;
+    background-color: #0d6efd; /* Cor primária do Bootstrap */
+    color: #fff;
+}
+.btn-sm.btn-outline-danger:hover {
+    transform: none;
+    box-shadow: none;
+    background-color: #dc3545; /* Cor de perigo do Bootstrap */
+    color: #fff;
+}
+
+/* Input de Filtro */
+#filtroInput:focus {
+    /* Adiciona um brilho verde (do tema) ao focar no input */
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+    border-color: #198754;
+}

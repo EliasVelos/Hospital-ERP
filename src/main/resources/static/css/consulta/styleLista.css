@@ -1,0 +1,101 @@
+/* 1. Estilo do Body (Fundo Escuro Mantido para que o card claro se destaque) */
+        body {
+            /* Usando um placeholder, mas a URL deve ser a sua real (e.g., '/img/ImgHospital.jpg') */
+            background-image: url('/img/ImgHospital2.jpg'); 
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-attachment: fixed; 
+            background-position: center center;
+            min-height: 100vh;
+        }
+
+        /* 2. Estilo do Card Principal (Glassmorphism CLARO) */
+        .patient-card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* Sombra suave */
+            overflow: hidden;
+            
+            /* Fundo branco com 85% de opacidade */
+            background-color: rgba(255, 255, 255, 0.85); 
+            
+            /* Efeito de vidro fosco (glassmorphism) */
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            color: #212529; /* Garante que o texto base seja escuro */
+        }
+        
+        /* 3. Cabeçalho do Card (Transparente e Borda Sutil) */
+        .patient-card .card-header {
+            background-color: transparent;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Borda escura sutil */
+            padding: 1.5rem;
+            color: #212529;
+        }
+
+        /* 4. Sobrepondo estilos de Tabela para o tema Claro/Transparente */
+        .table {
+            --bs-table-bg: transparent; /* Fundo transparente */
+            --bs-table-striped-bg: rgba(0, 0, 0, 0.03); /* Listras cinzas muito suaves */
+            color: #212529; /* Cor do texto da tabela */
+        }
+        
+        /* 5. Cabeçalho da Tabela */
+        .table thead th {
+             /* Remove o fundo table-dark e usa um cinza claro para destacar */
+             background-color: rgba(0, 0, 0, 0.05); 
+             color: #212529; 
+             border-bottom: 2px solid rgba(0, 0, 0, 0.2); 
+             font-weight: 600; 
+        }
+
+        /* 6. Linhas da Tabela */
+        .table tbody td {
+             vertical-align: middle;
+             border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Linha separadora sutil e clara */
+        }
+        
+        /* 7. Hover na Tabela */
+        .table-hover > tbody > tr:hover > * {
+            --bs-table-hover-bg: rgba(0, 0, 0, 0.08); /* Fundo cinza suave no hover */
+            color: #212529;
+        }
+
+        /* 8. Estilo de Filtro e Botões */
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: rgba(0, 0, 0, 0.15);
+            color: #495057;
+        }
+        .form-control {
+            background-color: #ffffff;
+            border-color: rgba(0, 0, 0, 0.15);
+            color: #212529;
+        }
+        .form-control::placeholder {
+            color: #6c757d;
+            opacity: 0.8;
+        }
+        .btn-outline-secondary {
+            --bs-btn-color: #6c757d;
+            --bs-btn-border-color: #6c757d;
+            --bs-btn-hover-bg: #6c757d;
+            --bs-btn-hover-border-color: #6c757d;
+        }
+        
+        /* 9. Estilos dos botões (Mantidos para cor profissional) */
+        .btn-primary {
+             --bs-btn-bg: #0d6efd;
+             --bs-btn-border-color: #0d6efd;
+             transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 4px 10px rgba(13, 110, 253, 0.5);
+            transform: translateY(-1px);
+        }
+        .btn-outline-info {
+            --bs-btn-color: #0d6efd;
+            --bs-btn-border-color: #0d6efd;
+            --bs-btn-hover-color: #ffffff;
+            --bs-btn-hover-bg: #0d6efd;
+        }

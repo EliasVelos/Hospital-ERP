@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhes do Relatório</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body class="bg-light">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow-lg p-4">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <h1 class="display-4 text-info"><i class="fas fa-info-circle me-2"></i> Detalhes do Relatório</h1>
+                            <p class="text-muted" th:text="${relatorio.tituloRelatorio}"></p>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <strong><i class="fas fa-calendar-alt me-1"></i> Data de Geração:</strong> 
+                                <span th:text="${#temporals.format(relatorio.dataGeracao, 'dd/MM/yyyy')}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <strong><i class="fas fa-calendar-check me-1"></i> Período Abrangido:</strong> 
+                                <span th:text="${#temporals.format(relatorio.dataInicioPeriodo, 'dd/MM/yyyy')}"></span> 
+                                a 
+                                <span th:text="${#temporals.format(relatorio.dataFimPeriodo, 'dd/MM/yyyy')}"></span>
+                            </div>
+                        </div>
+
+                        <h3 class="mb-3 text-primary"><i class="fas fa-clipboard-list me-2"></i> Conteúdo Detalhado</h3>
+                        
+                        <div class="card bg-light p-3 border">
+                             <pre th:text="${relatorio.conteudo}" style="white-space: pre-wrap; font-family: monospace;"></pre>
+                        </div>
+                        
+                        <div align="center" style="margin-top: 30px">
+                            <a th:href="@{/relatorios/listar}" class="btn btn-secondary btn-lg"><i class="fas fa-arrow-left me-2"></i> Voltar à Lista de Relatórios</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Pacientes</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/paciente/styleLista.css}">
+    <script th:src="@{/js/paciente/lista.js}"></script>
+
+</head>
+
+<body class="bg-light"> 
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-11"> <div class="card patient-card">
+
+                    <div class="card-header">
+                        <header class="d-flex justify-content-between align-items-center">
+                            <h2 class="text-primary mb-0 h4"> <i class="fas fa-wheelchair me-2"></i> Lista de Pacientes
+                            </h2>
+                            <a th:href="@{${session.userHomeUrl}}" class="btn btn-outline-secondary">
+                                <i class="fas fa-home me-1"></i> Voltar à página inicial
+                            </a>
+                        </header>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div th:if="${mensagemSucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <span th:text="${mensagemSucesso}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div th:if="${mensagemErro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <span th:text="${mensagemErro}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-4"> <a th:href="@{/pacientes/criar}" class="btn btn-success shadow-sm">
+                                <i class="fas fa-plus me-1"></i> Cadastrar Novo Paciente
+                            </a>
+            
+                            <div class="input-group" style="max-width: 400px;"> <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" id="filtroInput" class="form-control" placeholder="Pesquisar por Nome, CPF ou Telefone...">
+                                <button class="btn btn-outline-secondary" type="button" onclick="limparFiltro()"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle" id="tabelaPacientes">
+                                
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">ID</th>
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                        <th class="text-center">Data Nasc.</th>
+                                        <th class="text-center">Sexo</th>
+                                        <th class="text-center">Tipo Sanguíneo</th>
+                                        <th>Endereço</th>
+                                        <th>Telefone</th>
+                                        <th class="text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="paciente : ${pacientes}">
+                                        <td class="text-center" th:text="${paciente.idPaciente}">*</td>
+                                        <td th:text="${paciente.nomePaciente}">*</td>
+                                        <td th:text="${paciente.cpfPaciente}">*</td>
+                                        <td class="text-center" th:text="${#temporals.format(paciente.nascPaciente, 'dd/MM/yyyy')}"></td>
+                                        <td class="text-center" th:text="${paciente.sexoPaciente}">*</td>
+                                        <td class="text-center" th:text="${paciente.tipoSanguinioPaciente}">*</td>
+                                        
+                                        <td class="address-cell" th:text="${paciente.enderecoPaciente}" th:title="${paciente.enderecoPaciente}"></td>
+                                        
+                                        <td th:text="${paciente.telefonePaciente}">*</td>
+                                        <td class="text-center">
+                                            <div class="d-flex gap-2 justify-content-center">
+                                                <a th:href="@{/pacientes/editar/{id}(id=${paciente.idPaciente})}"
+                                                    class="btn btn-sm btn-outline-primary" title="Editar"><i class="fas fa-edit"></i></a>
+                                                
+                                                <a th:href="@{/pacientes/excluir/{id}(id=${paciente.idPaciente})}" class="btn btn-sm btn-outline-danger"
+                                                    onclick="return confirm('Deseja realmente excluir este paciente?')" title="Excluir">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot th:if="${#lists.isEmpty(pacientes)}">
+                                    <tr>
+                                        <td colspan="9" class="text-center p-4 text-muted">
+                                            <i class="fas fa-search-minus me-1"></i> Nenhum paciente cadastrado ainda.
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div> </div> </div> </div> </div> </div> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+/* Estilos da Tabela */
+.table-custom { 
+    margin-top: 20px; 
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.table-custom th { 
+    background-color: #0d6efd; 
+    color: white; 
+}
+.table-custom tr:hover {
+    background-color: #f0f8ff; 
+}
+
+/* Animação de Entrada (Fade-in e Slide-up) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Animação de Hover dos Botões de Ação */
+.btn-action {
+    transition: transform 0.2s;
+}
+.btn-action:hover {
+    transform: scale(1.1);
+}
+
+/* Estilo para Badges (Roles) */
+.badge {
+    font-size: 0.85em;
+    padding: 0.4em 0.7em;
+    font-weight: 600;
+}

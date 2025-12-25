@@ -1,0 +1,70 @@
+ /* Estilos base (mantidos) */
+ h1, h2, h3, h4, h5, h6, p, label {
+    cursor: default !important;
+    user-select: none !important;
+    caret-color: transparent !important;
+}
+
+h1:focus, h2:focus, h3:focus, h4:focus, h5:focus, h6:focus, p:focus, label:focus {
+    outline: none !important;
+    caret-color: transparent !important;
+}
+
+/* Fundo da Imagem (mantido) */
+body {
+    background-image: url('/img/hospital.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    background-position: center center;
+    min-height: 100vh;
+    height: 100vh;
+}
+
+/* 1. CARTÃO DE LOGIN: Transparência e Animação de Entrada */
+.login-card {
+    border-radius: 12px;
+    padding: 35px;
+    /* Fundo com Transparência (0.9 de opacidade) */
+    background: rgba(255, 255, 255, 0.5); 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15); /* Sombra um pouco mais forte */
+    
+    /* Animação de Entrada */
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* 2. DEFINIÇÃO DA ANIMAÇÃO FADE-IN */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-title {
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #0d6efd;
+}
+
+/* 3. BOTÃO DE LOGIN: Animação de Sombra ao Passar o Mouse */
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease; /* Transição suave para todas as propriedades */
+}
+
+.btn-login:hover {
+    box-shadow: 0 6px 15px rgba(13, 110, 253, 0.5); /* Sombra colorida no hover */
+    transform: translateY(-2px); /* Efeito sutil de levantar */
+}
+
+.alert {
+    border-radius: 8px;
+}

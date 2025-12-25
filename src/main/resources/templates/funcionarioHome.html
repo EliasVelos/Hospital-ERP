@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" th:href="@{/img/favicon.ico}" />
+    <title>Início | Sistema do Hospital</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/funcionarioHome.css}">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/dashboard"> <i class="fas fa-hospital me-2"></i> Hospital Digital
+            </a>
+            <div class="ms-auto">
+                <a th:href="@{/funcionarios/perfil}" class="btn btn-outline-light me-2">
+                    <i class="fas fa-user-circle me-1"></i> Meu Perfil
+                </a>
+                <a th:href="@{/logout}" class="btn btn-outline-light">
+                    <i class="fas fa-sign-out-alt me-1"></i> Sair
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="p-4 mb-4 text-white rounded-3 shadow-lg welcome-banner">
+            <div class="container-fluid py-3 welcome-overlay">
+                <h1 class="display-5 fw-bold" th:text="'Bem-vindo(a), ' + ${nomeUsuarioLogado ?: 'Funcionário'} + '!'">
+                    Bem-vindo(a), Funcionário!
+                </h1>
+                <p class="col-md-8 fs-4">Sua área de trabalho para atendimento e gerenciamento de pacientes.</p>
+            </div>
+        </div>
+
+        <h2 class="mt-4 mb-3 text-center text-secondary border-bottom pb-2">
+            <i class="fas fa-tachometer-alt me-2"></i> Painel de Atendimento
+        </h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+            <div class="col">
+                <div class="card h-100 shadow-sm border-start border-warning border-5 kpi-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-warning"></i>
+                        <h5 class="card-title mt-2">Pacientes Aguardando</h5>
+                        <h2 class="display-4 fw-bold" th:text="${pacientesAguardando ?: 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-start border-info border-5 kpi-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-calendar-check fa-3x text-info"></i>
+                        <h5 class="card-title mt-2">Consultas (Hoje)</h5>
+                        <h2 class="display-4 fw-bold" th:text="${consultasHoje ?: 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm border-start border-success border-5 kpi-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-bed fa-3x text-success"></i>
+                        <h5 class="card-title mt-2">Leitos Disponíveis</h5>
+                        <h2 class="display-4 fw-bold" th:text="${leitosLivres ?: 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mt-4 mb-4 text-center text-primary border-bottom pb-2">
+            <i class="fas fa-tasks me-2"></i> Módulos de Acesso Rápido
+        </h2>
+        
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-5 justify-content-center">
+            <div class="col">
+                <a href="/pacientes/listar" class="card-link">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-wheelchair fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Gerenciar Pacientes</h5>
+                            <p class="card-text text-muted">Acesso, cadastro e atualização de dados.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col">
+                <a href="/consultas/listar" class="card-link">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-calendar-alt fa-3x text-info mb-3"></i>
+                            <h5 class="card-title">Agendamento de Consultas</h5>
+                            <p class="card-text text-muted">Marcar, reagendar e visualizar a agenda.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col">
+                <a href="/internacoes/listar" class="card-link">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-bed fa-3x text-danger mb-3"></i>
+                            <h5 class="card-title">Controle de Internações</h5>
+                            <p class="card-text text-muted">Status de pacientes internados.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    
+    <footer class="footer">
+        <div class="container text-center">
+            <span class="text-muted">Sistema de Gestão Hospitalar © 2025 | Todos os direitos reservados.</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>

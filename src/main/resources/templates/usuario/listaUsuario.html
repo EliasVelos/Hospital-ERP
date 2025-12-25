@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/usuario/styleLista.css}">
+    
+
+</head>
+<body>
+    <div class="container mt-5">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0"><i class="fas fa-user-shield me-2"></i> Gerenciar Contas de Acesso</h2>
+            <a th:href="@{${session.userHomeUrl}}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Voltar ao Dashboard
+            </a>
+        </div>
+        
+        <div th:if="${mensagemSucesso}" class="alert alert-success" th:text="${mensagemSucesso}"></div>
+        <div th:if="${mensagemErro}" class="alert alert-danger" th:text="${mensagemErro}"></div>
+        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a th:href="@{/admin/usuarios/formulario}" class="btn btn-primary">
+                <i class="fas fa-user-plus me-1"></i> Novo Usuário
+            </a>
+
+            <div class="input-group" style="max-width: 400px;">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" id="filtroInput" class="form-control" placeholder="Filtrar por Login, Perfil, etc...">
+                <button class="btn btn-outline-secondary" type="button" onclick="limparFiltro()"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-custom" id="tabelaUsuarios">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Login (Username)</th>
+                        <th>Perfil (Role)</th>
+                        <th>Entidade Relacionada</th>
+                        <th>ID da Entidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="usuario : ${usuarios}">
+                        <td th:text="${usuario.id}">1</td>
+                        <td th:text="${usuario.username}">user@hospital.com</td>
+                        <td>
+                            <span class="badge" 
+                                th:classappend="${usuario.role == 'ADMIN' ? 'bg-danger' : 
+                                               (usuario.role == 'MEDICO' ? 'bg-info' : 
+                                               (usuario.role == 'FUNCIONARIO' ? 'bg-warning' : 'bg-secondary'))}"
+                                th:text="${usuario.role}">
+                            </span>
+                        </td>
+                        <td>
+                            <span th:if="${usuario.paciente != null}">Paciente</span>
+                            <span th:if="${usuario.medico != null}">Médico</span>
+                            <span th:if="${usuario.funcionario != null}">Funcionário</span>
+                            <span th:if="${usuario.role == 'ADMIN' and usuario.paciente == null and usuario.medico == null and usuario.funcionario == null}">Administrador</span>
+                        </td>
+                        <td th:text="${usuario.entidadeId}">0</td>
+                        <td>
+                            <a th:href="@{/admin/usuarios/formulario(id=${usuario.id})}" class="btn btn-sm btn-warning me-1 btn-action" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a th:href="@{/admin/usuarios/excluir/{id}(id=${usuario.id})}" 
+                               class="btn btn-sm btn-danger btn-action" 
+                               onclick="return confirm('ATENÇÃO: A exclusão de um usuário pode quebrar a relação com Paciente/Médico/Funcionário. Tem certeza?')" 
+                               title="Excluir">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script th:src="@{/js/usuario/lista.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

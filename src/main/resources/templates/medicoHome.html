@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" th:href="@{/img/favicon.ico}" />
+    <title>Dashboard do Médico | Hospital</title>
+    <link rel="stylesheet" th:href="@{/css/medicoHome.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/medico/home">
+                <i class="fas fa-hospital me-2"></i> Hospital Digital
+            </a>
+            <div class="ms-auto">
+                <a th:href="@{/logout}" class="btn btn-outline-light">
+                    <i class="fas fa-sign-out-alt me-1"></i> Sair
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <div class="p-4 mb-4 text-white rounded-3 shadow-lg welcome-banner-medico">
+            <div class="container-fluid py-3 welcome-overlay rounded-3">
+                <h1 class="display-5 fw-bold" th:text="'Bem-vindo(a), ' + ${nomeMedicoLogado ?: 'Dr(a).'}">
+                    Bem-vindo(a), Dr(a).
+                </h1>
+                <p class="col-md-8 fs-4">Revise sua agenda e os pacientes sob seus cuidados.</p>
+            </div>
+        </div>
+        
+        <h2 class="mt-4 mb-3 text-center text-secondary border-bottom pb-2">
+            <i class="fas fa-chart-pie me-2"></i> Status do Dia
+        </h2>
+        <div class="row row-cols-1 row-cols-md-1 g-4 mb-5">
+            <div class="col">
+                <div class="card h-100 shadow-sm border-start border-danger border-5 kpi-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-bed fa-3x text-danger"></i>
+                        <h5 class="card-title mt-2">Pacientes (Internados)</h5>
+                        <h2 class="display-4 fw-bold" th:text="${totalPacientesInternados ?: 0}">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-8">
+               <h2 class="mb-3 text-primary"><i class="fas fa-users me-2"></i> Próximos Pacientes (Hoje)</h2>
+<div class="card shadow-sm">
+    <div class="list-group list-group-flush">
+
+        <div th:each="consulta : ${listaProximasConsultas}" 
+             class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+
+            <div>
+                <h5 class="mb-1" th:text="${consulta.paciente.nomePaciente}">Nome do Paciente</h5>
+                <p class="mb-1 text-muted" th:text="${consulta.observacoesConsulta}">Motivo da consulta...</p>
+            </div>
+
+            <span class="badge bg-primary rounded-pill fs-6"
+            th:text="${#temporals.format(consulta.dataehoraConsulta, 'HH:mm')}">
+            10:30
+            </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <div class="col-lg-4">
+                <h2 class="mb-3 text-secondary"><i class="fas fa-toolbox me-2"></i> Acesso Rápido</h2>
+                <div class="list-group shadow-sm">
+                    <a href="/pacientes/listar" class="list-group-item list-group-item-action fs-5 p-3">
+                        <i class="fas fa-search me-2 text-primary"></i> Buscar Paciente
+                    </a>
+                    <a href="/leitos/listar" class="list-group-item list-group-item-action fs-5 p-3">
+                        <i class="fas fa-bed me-2 text-danger"></i> Ver Leitos Disponíveis
+                    </a>
+                    <a href="/consultas/listar" class="list-group-item list-group-item-action fs-5 p-3">
+                        <i class="fas fa-calendar-alt me-2 text-info"></i> Ver Agenda Completa
+                    </a>
+                    <a href="/internacoes/listar" class="list-group-item list-group-item-action fs-5 p-3">
+                    <i class="fas fa-procedures me-2 text-info"></i> Ver Internações Ativas
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <footer class="footer mt-5 py-3 bg-white border-top">
+        <div class="container text-center">
+            <span class="text-muted">Sistema de Gestão Hospitalar © 2025 | Desenvolvido com Spring Boot.</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>

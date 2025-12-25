@@ -1,0 +1,31 @@
+/* Estilos personalizados para a página de cadastro */
+        body {
+            background-image: url('/img/ImgHospital.jpg'); /* Imagem de fundo */
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-attachment: fixed; 
+            background-position: center center;
+            min-height: 100vh;
+            height: 100vh;
+        }   
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.85);
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .input-group-text {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .display-4 {
+            color: #0d6efd !important;
+        } 

@@ -1,0 +1,95 @@
+/* 1. Estilo do Body (Fundo Escuro Mantido para que o card claro se destaque) */
+        body {
+            /* Imagem de fundo deve ser carregada via contexto Thymeleaf ou URL fixa, ajustei para um placeholder */
+            background-image: url('/img/ImgHospital2.jpg'); 
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-attachment: fixed; 
+            background-position: center center;
+            min-height: 100vh;
+        }
+
+        /* 2. Estilo do Card Principal (Glassmorphism CLARO) */
+        .patient-card {
+            border-radius: 12px;
+            border: none;
+            /* Sombra suave para o tema claro */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            
+            /* AQUI: Fundo branco com 85% de opacidade */
+            background-color: rgba(255, 255, 255, 0.85); 
+            
+            /* Efeito de vidro fosco */
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            color: #212529; /* Garante que o texto base seja escuro */
+        }
+
+        /* 3. Estilos dos elementos do formulário no tema claro */
+        .form-label, h2 span {
+            color: #212529 !important; /* Texto escuro para títulos e labels */
+        }
+        
+        /* Mantém o ícone do título azul */
+        h2 i.text-info {
+            color: #0d6efd !important;
+        }
+
+        .form-control, .form-select {
+            /* Fundo sutilmente cinza e transparente para os campos */
+            background-color: rgba(0, 0, 0, 0.05); 
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Borda escura e sutil */
+            color: #212529; /* Texto digitado escuro */
+        }
+        
+        /* Cor dos placeholders */
+        .form-control::placeholder, .form-select > option[value=""] {
+            color: #6c757d;
+            opacity: 0.8;
+        }
+        
+        /* Foco */
+        .form-control:focus, .form-select:focus {
+            background-color: #ffffff; /* Fundo branco puro no foco */
+            border-color: #0d6efd; /* Borda azul no foco */
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        /* Select Options (ajuste para fundo branco) */
+        .form-select option {
+            background-color: #ffffff; /* Fundo branco puro para as opções do select */
+            color: #212529;
+        }
+        
+        /* Estilo de Botão Salvar (Mantido) */
+        .btn-success {
+             --bs-btn-bg: #198754;
+             --bs-btn-border-color: #198754;
+             transition: all 0.3s ease;
+        }
+        .btn-success:hover {
+            box-shadow: 0 4px 10px rgba(25, 135, 84, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        /* Estilo de Botão Cancelar (Mantido) */
+        .btn-secondary {
+             --bs-btn-bg: #6c757d;
+             --bs-btn-border-color: #6c757d;
+             transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            box-shadow: 0 4px 10px rgba(108, 117, 125, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* Estilo de Botão Voltar (Ajustado para o tema claro) */
+        .btn-outline-info {
+            --bs-btn-color: #0d6efd;
+            --bs-btn-border-color: #0d6efd;
+            --bs-btn-hover-color: #ffffff;
+            --bs-btn-hover-bg: #0d6efd;
+            --bs-btn-hover-border-color: #0d6efd;
+        }
+        

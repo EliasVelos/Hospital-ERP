@@ -1,0 +1,26 @@
+/* Estilos de usabilidade e novos estilos de banner/kpi */
+h1, h2, h3, h4, h5, h6, p, div { cursor: default !important; user-select: none !important; caret-color: transparent !important; }
+body { background-color: #eef2f7; padding-top: 56px; }
+.navbar { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.card-link { text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; }
+.card-link:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+.card { border-radius: 10px; border: none; }
+.card-body h5 { font-weight: bold; margin-top: 10px; }
+.footer { padding: 20px 0; background-color: #ffffff; border-top: 1px solid #e9ecef; margin-top: 50px; }
+
+/* [IMAGEM AQUI] Banner de Boas-Vindas */
+.welcome-banner {
+    /* Coloque uma imagem de recepção ou escritório aqui */
+    background-image: url('/img/reception-banner.jpg'); 
+    background-size: cover;
+    background-position: center;
+}
+.welcome-overlay {
+    background-color: rgba(0, 86, 179, 0.7); /* Sobreposição azul */
+    border-radius: 8px;
+    backdrop-filter: blur(2px);
+}
+
+/* Estilos dos KPIs */
+.kpi-card h5 { font-size: 1.1rem; color: #6c757d; }
+.kpi-card .display-4 { font-weight: 700 !important; }

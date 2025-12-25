@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Médicos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/medico/styleLista.css}">
+    
+    
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-danger mb-0">
+                <i class="fas fa-list me-2"></i> Cadastro de Médicos
+            </h2>
+             <a th:href="@{${session.userHomeUrl}}" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-1"></i> Voltar à página inicial
+            </a>
+        </div>
+
+        <div th:if="${mensagemSucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensagemSucesso}">Mensagem de Sucesso</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${mensagemErro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${mensagemErro}">Mensagem de Erro</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            
+            <a th:href="@{/medicos/criar}" class="btn btn-add-medico shadow-sm">
+                <i class="fas fa-plus me-1"></i> Novo Médico
+            </a>
+
+            <div class="input-group" style="max-width: 450px;">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" id="filtroInput" class="form-control" placeholder="Pesquisar por Nome, CRM, CPF ou Especialidade...">
+                <button class="btn btn-outline-secondary" type="button" onclick="limparFiltro()"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover shadow-sm border" id="tabelaMedicos">
+                <thead class="bg-danger text-white">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">CRM</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">CPF</th>
+                        <th scope="col">Especialidade</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Endereço</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="medico : ${medicos}">
+                        <td th:text="${medico.idMedico}"></td>
+                        <td th:text="${medico.crmMedico}"></td>
+                        <td th:text="${medico.nomeMedico}"></td>
+                        <td th:text="${medico.cpfMedico}"></td>
+                        <td th:text="${medico.especialidadeMedico}"></td>
+                        <td th:text="${medico.telefoneMedico}"></td>
+                        <td th:text="${medico.enderecoMedico}"></td>
+                        <td class="d-flex gap-2">
+                            <a th:href="@{/medicos/editar/{id}(id=${medico.idMedico})}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a th:href="@{/medicos/excluir/{id}(id=${medico.idMedico})}" 
+                               onclick="return confirm('Deseja realmente excluir o(a) Dr(a)?')" 
+                               class="btn btn-sm btn-outline-danger" title="Excluir">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot th:if="${#lists.isEmpty(medicos)}">
+                    <tr>
+                        <td colspan="8" class="text-center p-4 text-muted">
+                            <i class="fas fa-search-minus me-1"></i> Nenhuma médico(a) cadastrado(a) ainda.
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+    </div>
+    <script th:src="@{/js/medico/lista.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

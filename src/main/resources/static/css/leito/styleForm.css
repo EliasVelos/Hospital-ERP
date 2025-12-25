@@ -1,0 +1,13 @@
+body {
+    /* NOTA: Verifique se sua imagem está em /static/img/ImgQuartos.jpg
+       A sintaxe th:href não funciona dentro de <style>.
+       Usamos o caminho de URL absoluto que o Spring irá servir.
+    */
+    background-image: url('/img/ImgQuartos.jpg');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    background-position: center center;
+    min-height: 100vh;
+    position: relative; /* Necessário para o overlay */
+}

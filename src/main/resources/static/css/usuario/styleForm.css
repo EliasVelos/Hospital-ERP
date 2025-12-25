@@ -1,0 +1,36 @@
+/* Animação de Entrada (Fade-in) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+    background-color: #f8f9fa; /* Fundo leve para contraste */
+}
+
+.container {
+    animation: fadeIn 0.7s ease-out;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Sombra mais destacada */
+}
+
+.input-group-text {
+    background-color: #e9ecef;
+}
+
+/* Estilo para botão de Voltar/Cancelar */
+.btn-secondary {
+    transition: background-color 0.2s;
+}
+
+/* Estilo para botão Salvar */
+.btn-success {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+}
