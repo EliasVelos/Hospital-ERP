@@ -15,25 +15,17 @@ import java.time.LocalDateTime;
 @Data
 public class Internacao {
 
-    // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idInternacao; 
     
-    // --- CAMPOS DE ID PRIMITIVO REMOVIDOS ---
-    // Os campos pacienteId e leitoId foram excluídos daqui.
-
-    // ✅ RELACIONAMENTO COM PACIENTE (Chave Estrangeira)
     @ManyToOne 
-    @JoinColumn(name = "paciente_fk_id", nullable = false) // Coluna no banco que armazena o ID do paciente
+    @JoinColumn(name = "paciente_fk_id", nullable = false) 
     private Paciente paciente; 
 
-    // ✅ RELACIONAMENTO COM LEITO (Chave Estrangeira)
     @ManyToOne 
-    @JoinColumn(name = "leito_fk_id", nullable = false) // Coluna no banco que armazena o ID do leito
+    @JoinColumn(name = "leito_fk_id", nullable = false) 
     private Leito leito; 
-
-    // --- CAMPOS PRÓPRIOS DA INTERNAÇÃO ---
     
     @Column(nullable = false)
     private LocalDateTime dataEntrada; 
@@ -56,6 +48,4 @@ public class Internacao {
                 ", status='" + status + '\'' +
                 '}';
     }
-
-    
 }
