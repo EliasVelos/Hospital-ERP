@@ -38,13 +38,13 @@ public class LoginController {
     private MedicoRepository medicoRepository;
     @Autowired
     private FuncionarioRepository funcionarioRepository;
-    @Autowired 
+    @Autowired
     private InternacaoService internacaoService;
-    @Autowired 
+    @Autowired
     private LeitoService leitoService;
-    @Autowired 
+    @Autowired
     private ConsultaService consultaService;
-    @Autowired 
+    @Autowired
     private MedicamentoService medicamentoService;
 
     @GetMapping("/login")
@@ -167,38 +167,45 @@ public class LoginController {
     }
 
     @GetMapping("/adminHome")
-public String adminHome(Model model, Principal principal) { // <--- Mudou aqui
-    
-    // 1. PEGAR O NOME DO USUÁRIO (Alternativa Simples)
-    String nome = "Admin"; // Valor padrão caso algo falhe
-    if (principal != null) {
-        nome = principal.getName(); // Pega o login (email ou username)
+    public String adminHome(Model model, Principal principal) { // <--- Mudou aqui
+
+        // 1. PEGAR O NOME DO USUÁRIO (Alternativa Simples)
+        String nome = "Admin"; // Valor padrão caso algo falhe
+        if (principal != null) {
+            nome = principal.getName(); // Pega o login (email ou username)
+        }
+        model.addAttribute("nomeUsuarioLogado", nome);
+
+        // --- O RESTO CONTINUA IGUAL (SEUS KPIs) ---
+
+        // 2. BUSCAR OS DADOS (Certifique-se que seus Services estão injetados com
+        // @Autowired acima)
+        int internados = internacaoService.contarInternacoesAtivas();
+        Long leitosLivres = leitoService.countLeitosOcupados();
+        int consultasHoje = consultaService.contarConsultasDeHoje();
+        int alertasEstoque = medicamentoService.contarAlertasEstoqueBaixo();
+
+        // ⭐ LINHA ADICIONADA: Conta o total de médicos no banco
+        long totalMedicos = medicoRepository.count();
+
+        // 3. MANDAR PRO HTML
+        model.addAttribute("totalInternados", internados);
+        model.addAttribute("totalLeitosDisponiveis", leitosLivres);
+        model.addAttribute("totalConsultasHoje", consultasHoje);
+        model.addAttribute("totalAlertasEstoque", alertasEstoque);
+
+        // ⭐ LINHA ADICIONADA: Envia o valor para o HTML
+        model.addAttribute("totalMedicosAtivos", totalMedicos);
+
+        return "adminHome"; // O nome do seu arquivo HTML
     }
-    model.addAttribute("nomeUsuarioLogado", nome);
 
-    // --- O RESTO CONTINUA IGUAL (SEUS KPIs) ---
-    
-    // 2. BUSCAR OS DADOS (Certifique-se que seus Services estão injetados com @Autowired acima)
-    int internados = internacaoService.contarInternacoesAtivas();
-    Long leitosLivres = leitoService.countLeitosOcupados();
-    int consultasHoje = consultaService.contarConsultasDeHoje();
-    int alertasEstoque = medicamentoService.contarAlertasEstoqueBaixo();
+    @GetMapping("/medicoHome")
+    public String medicoHome(Model model, HttpSession session) {
 
-    // 3. MANDAR PRO HTML
-    model.addAttribute("totalInternados", internados);
-    model.addAttribute("totalLeitosDisponiveis", leitosLivres);
-    model.addAttribute("totalConsultasHoje", consultasHoje);
-    model.addAttribute("totalAlertasEstoque", alertasEstoque);
+        List<Consulta> proximas = consultaService.buscarProximasDoDia();
+        model.addAttribute("listaProximasConsultas", proximas);
 
-    return "adminHome"; // O nome do seu arquivo HTML
-}
-
-@GetMapping("/medicoHome")
-public String medicoHome(Model model, HttpSession session) {
-
-    List<Consulta> proximas = consultaService.buscarProximasDoDia();
-    model.addAttribute("listaProximasConsultas", proximas);
-
-    return "medicoHome";
-}
+        return "medicoHome";
+    }
 }

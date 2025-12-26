@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="list-group list-group-flush mt-3">
-                <a href="/dashboard" class="list-group-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="/adminHome" class="list-group-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 
                 <div class="sidebar-heading">Clínica</div>
                 <a href="/pacientes/listar" class="list-group-item"><i class="fas fa-user-injured"></i> Pacientes</a>
@@ -73,13 +73,13 @@
                     <div class="col-md-3">
                         <div class="card kpi-card p-3 shadow-sm border-0 d-flex flex-row align-items-center">
                             <div class="icon-circle bg-soft-success text-success me-3"><i class="fas fa-calendar-alt"></i></div>
-                            <div><div class="text-muted small">Consultas</div><h3 class="fw-bold mb-0" th:text="${totalConsultasHoje ?: 0}">0</h3></div>
+                            <div><div class="text-muted small">Consultas Hoje</div><h3 class="fw-bold mb-0" th:text="${totalConsultasHoje ?: 0}">0</h3></div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card kpi-card p-3 shadow-sm border-0 d-flex flex-row align-items-center">
                             <div class="icon-circle bg-soft-warning text-warning me-3"><i class="fas fa-exclamation-triangle"></i></div>
-                            <div><div class="text-muted small">Alertas</div><h3 class="fw-bold mb-0" th:text="${totalAlertasEstoque ?: 0}">0</h3></div>
+                            <div><div class="text-muted small">Alertas de Estoque</div><h3 class="fw-bold mb-0" th:text="${totalAlertasEstoque ?: 0}">0</h3></div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -95,12 +95,20 @@
                         <div class="card border-0 shadow-sm p-4 h-100">
                             <h6 class="fw-bold mb-4">Atalhos Rápidos</h6>
                             <div class="row g-3">
-                                <div class="col-4"><a href="/pacientes/listar" class="btn btn-outline-primary w-100 py-3 small"><i class="fas fa-plus d-block mb-1"></i> Novo Paciente</a></div>
-                                <div class="col-4"><a href="/consultas/listar" class="btn btn-outline-success w-100 py-3 small"><i class="fas fa-calendar-plus d-block mb-1"></i> Agendar Consultas</a></div>
-                                <div class="col-4"><a href="/relatorios/listar" class="btn btn-outline-warning w-100 py-3 small"><i class="fas fa-file-alt d-block mb-1"></i> Relatórios</a></div>
+                                <div class="col-6">
+                                    <a href="/pacientes/listar" class="btn btn-outline-primary w-100 py-3 small">
+                                        <i class="fas fa-plus d-block mb-1"></i> Novo Paciente
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="/consultas/listar" class="btn btn-outline-success w-100 py-3 small">
+                                        <i class="fas fa-calendar-plus d-block mb-1"></i> Agendar Consultas
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-lg-5">
                         <div class="card border-0 shadow-sm p-4 h-100">
                             <h6 class="fw-bold mb-4">Status do Sistema</h6>

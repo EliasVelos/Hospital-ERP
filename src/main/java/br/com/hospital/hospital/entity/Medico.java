@@ -9,12 +9,10 @@ import lombok.Data;
 @Data
 public class Medico {
 
-    // Chave primária
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // OK, embora IDENTITY seja mais comum
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idMedico;
 
-    // CRM gerado no Service, único, não nulo (se for novo)
     @Column(unique = true)
     private Integer crmMedico;
 
@@ -33,14 +31,14 @@ public class Medico {
     @Column(nullable = false, length = 40)
     private String enderecoMedico;
 
-    @OneToOne(cascade = CascadeType.ALL) // 'Cascade' salva o 'Usuario' automaticamente
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_fk_id", referencedColumnName = "id")
     private Usuario usuario;
     @Override
 
-public String toString() {
-    return "Medico [idMedico=" + idMedico + 
-           ", nomeMedico=" + nomeMedico + 
-           ", idUsuario=" + (usuario != null ? usuario.getId() : "null") + "]";
-}
+    public String toString() {
+        return "Medico [idMedico=" + idMedico + 
+            ", nomeMedico=" + nomeMedico + 
+            ", idUsuario=" + (usuario != null ? usuario.getId() : "null") + "]";
+    }
 }

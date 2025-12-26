@@ -54,6 +54,7 @@ public class MedicoService{
     public Medico findById(Integer id){
         return medicoRepository.findById(id).orElse(null);
     }
+
     @Transactional
     public Medico cadastrarNovoMedico(MedicoCadastroDTO dto) {
         
@@ -88,4 +89,10 @@ public class MedicoService{
         // 4. Salva o Médico (e o Usuário, se o Cascade estiver configurado)
         return medicoRepository.save(novoMedico);
     }
+
+    // Adicione este método aqui
+    public long countTotalMedicos() {
+        return medicoRepository.count();
+    }
+    
 }
