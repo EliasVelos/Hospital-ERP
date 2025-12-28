@@ -12,7 +12,7 @@ body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-/* Sidebar Styling */
+/* Sidebar Styling - ATUALIZADA */
 #sidebar-wrapper {
     min-height: 100vh;
     width: 280px;
@@ -21,6 +21,52 @@ body {
     display: flex;
     flex-direction: column;
     z-index: 1000;
+    position: fixed; /* Mantém a sidebar fixa */
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden; /* Impede scroll na sidebar como um todo */
+}
+
+/* Container do conteúdo da sidebar com scroll */
+.sidebar-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Área rolável da sidebar */
+.sidebar-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+}
+
+/* Estilização personalizada da scrollbar */
+.sidebar-scrollable::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar-scrollable::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.sidebar-scrollable::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.sidebar-scrollable::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Para Firefox */
+.sidebar-scrollable {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-brand {
@@ -77,11 +123,28 @@ body {
     opacity: 1;
 }
 
-/* User Profile Sidebar Area */
+/* Ajuste no menu de navegação */
+.list-group-flush {
+    flex-grow: 1;
+}
+
+/* Ajuste no perfil do usuário para ficar fixo no rodapé */
 .user-profile-sidebar {
     background: rgba(0, 0, 0, 0.2);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
+    flex-shrink: 0; /* Não encolhe com o scroll */
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px); /* Efeito de desfoque para melhor visualização */
+}
+
+/* Ajuste do conteúdo principal para compensar a sidebar fixa */
+#page-content-wrapper {
+    margin-left: 280px;
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
 }
 
 .status-indicator {
@@ -171,8 +234,30 @@ body {
 .bg-soft-warning { background: #fef3c7; }
 .bg-soft-info { background: #e0f2fe; }
 
-/* Responsividade Mobile */
+/* Responsividade Mobile - ATUALIZADA */
 @media (max-width: 991px) {
-    #sidebar-wrapper { margin-left: -280px; position: fixed; }
-    #wrapper.toggled #sidebar-wrapper { margin-left: 0; }
+    #sidebar-wrapper { 
+        margin-left: -280px; 
+        position: fixed;
+        z-index: 1040;
+    }
+    
+    #wrapper.toggled #sidebar-wrapper { 
+        margin-left: 0; 
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    #wrapper.toggled #page-content-wrapper {
+        margin-left: 0;
+    }
+    
+    #page-content-wrapper {
+        margin-left: 0;
+    }
+}
+
+/* Ajuste do botão toggle em mobile */
+#menu-toggle {
+    z-index: 1030;
+    position: relative;
 }
