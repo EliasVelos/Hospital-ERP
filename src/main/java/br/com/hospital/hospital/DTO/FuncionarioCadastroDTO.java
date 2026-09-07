@@ -14,5 +14,6 @@ public class FuncionarioCadastroDTO {
 
     // --- DADOS DO USUÁRIO (LOGIN) ---
     private String username;
+    @lombok.ToString.Exclude
     private String password;
 }

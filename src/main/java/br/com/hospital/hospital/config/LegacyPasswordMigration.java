@@ -3,7 +3,6 @@ package br.com.hospital.hospital.config;
 import br.com.hospital.hospital.entity.Usuario;
 import br.com.hospital.hospital.repository.UsuarioRepository;
 import java.util.regex.Pattern;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;

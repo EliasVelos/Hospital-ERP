@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.hospital.hospital.DTO.PacienteCadastroDTO;
-import org.springframework.beans.BeanUtils;
 import br.com.hospital.hospital.entity.Consulta;
 import br.com.hospital.hospital.entity.Paciente;
 import br.com.hospital.hospital.repository.ConsultaRepository;
@@ -152,8 +151,8 @@ public class PacienteController {
     public String salvarPaciente(@ModelAttribute("pacienteDTO") PacienteCadastroDTO dto, RedirectAttributes ra) {
         try {
             pacienteService.cadastrarNovoPaciente(dto);
-            ra.addFlashAttribute("mensagemSucesso", "Paciente e Acesso criados com sucesso! Faça o login.");
-            return "redirect:/login";
+            ra.addFlashAttribute("mensagemSucesso", "Paciente e conta de acesso cadastrados.");
+            return "redirect:/pacientes/listar";
         } catch (Exception e) {
             ra.addFlashAttribute("mensagemErro", "Não foi possível salvar os dados. Confira os campos e tente novamente.");
             dto.setPassword(null);
