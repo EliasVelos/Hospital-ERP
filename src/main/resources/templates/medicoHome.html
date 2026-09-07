@@ -15,13 +15,13 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="/medico/home">
+            <a class="navbar-brand fw-bold" th:href="@{/medicoHome}">
                 <i class="fas fa-hospital me-2"></i> Hospital Digital
             </a>
             <div class="ms-auto">
-                <a th:href="@{/logout}" class="btn btn-outline-light">
+                <form method="post" th:action="@{/logout}" class="d-inline"><button type="submit" class="btn btn-outline-light">
                     <i class="fas fa-sign-out-alt me-1"></i> Sair
-                </a>
+                </button></form>
             </div>
         </div>
     </nav>
@@ -36,7 +36,7 @@
                 <p class="col-md-8 fs-4">Revise sua agenda e os pacientes sob seus cuidados.</p>
             </div>
         </div>
-        
+
         <h2 class="mt-4 mb-3 text-center text-secondary border-bottom pb-2">
             <i class="fas fa-chart-pie me-2"></i> Status do Dia
         </h2>
@@ -51,14 +51,14 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row g-4">
             <div class="col-lg-8">
                <h2 class="mb-3 text-primary"><i class="fas fa-users me-2"></i> Próximos Pacientes (Hoje)</h2>
 <div class="card shadow-sm">
     <div class="list-group list-group-flush">
 
-        <div th:each="consulta : ${listaProximasConsultas}" 
+        <div th:each="consulta : ${listaProximasConsultas}"
              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 
             <div>
@@ -78,24 +78,13 @@
             <div class="col-lg-4">
                 <h2 class="mb-3 text-secondary"><i class="fas fa-toolbox me-2"></i> Acesso Rápido</h2>
                 <div class="list-group shadow-sm">
-                    <a href="/pacientes/listar" class="list-group-item list-group-item-action fs-5 p-3">
-                        <i class="fas fa-search me-2 text-primary"></i> Buscar Paciente
-                    </a>
-                    <a href="/leitos/listar" class="list-group-item list-group-item-action fs-5 p-3">
-                        <i class="fas fa-bed me-2 text-danger"></i> Ver Leitos Disponíveis
-                    </a>
-                    <a href="/consultas/listar" class="list-group-item list-group-item-action fs-5 p-3">
-                        <i class="fas fa-calendar-alt me-2 text-info"></i> Ver Agenda Completa
-                    </a>
-                    <a href="/internacoes/listar" class="list-group-item list-group-item-action fs-5 p-3">
-                    <i class="fas fa-procedures me-2 text-info"></i> Ver Internações Ativas
-                    </a>
+                    <a th:href="@{/consultas/minhas}" class="list-group-item list-group-item-action fs-5 p-3">Minha agenda e atendimentos</a>
                 </div>
             </div>
         </div>
-        
+
     </div>
-    
+
     <footer class="footer mt-5 py-3 bg-white border-top">
         <div class="container text-center">
             <span class="text-muted">Sistema de Gestão Hospitalar © 2025 | Desenvolvido com Spring Boot.</span>
@@ -103,6 +92,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
 </body>
 </html>

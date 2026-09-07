@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" th:href="@{/img/favicon.ico}" />
     <title>Início | Sistema do Hospital</title>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/funcionarioHome.css}">
@@ -16,15 +16,15 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="/dashboard"> <i class="fas fa-hospital me-2"></i> Hospital Digital
+            <a class="navbar-brand fw-bold" th:href="@{/}"> <i class="fas fa-hospital me-2"></i> Hospital Digital
             </a>
             <div class="ms-auto">
                 <a th:href="@{/funcionarios/perfil}" class="btn btn-outline-light me-2">
                     <i class="fas fa-user-circle me-1"></i> Meu Perfil
                 </a>
-                <a th:href="@{/logout}" class="btn btn-outline-light">
+                <form method="post" th:action="@{/logout}" class="d-inline"><button type="submit" class="btn btn-outline-light">
                     <i class="fas fa-sign-out-alt me-1"></i> Sair
-                </a>
+                </button></form>
             </div>
         </div>
     </nav>
@@ -75,7 +75,7 @@
         <h2 class="mt-4 mb-4 text-center text-primary border-bottom pb-2">
             <i class="fas fa-tasks me-2"></i> Módulos de Acesso Rápido
         </h2>
-        
+
         <div class="row row-cols-1 row-cols-md-3 g-4 mb-5 justify-content-center">
             <div class="col">
                 <a href="/pacientes/listar" class="card-link">
@@ -88,7 +88,7 @@
                     </div>
                 </a>
             </div>
-            
+
             <div class="col">
                 <a href="/consultas/listar" class="card-link">
                     <div class="card h-100 shadow-sm">
@@ -100,7 +100,7 @@
                     </div>
                 </a>
             </div>
-            
+
             <div class="col">
                 <a href="/internacoes/listar" class="card-link">
                     <div class="card h-100 shadow-sm">
@@ -115,7 +115,7 @@
         </div>
 
     </div>
-    
+
     <footer class="footer">
         <div class="container text-center">
             <span class="text-muted">Sistema de Gestão Hospitalar © 2025 | Todos os direitos reservados.</span>
@@ -123,6 +123,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
 </body>
 </html>

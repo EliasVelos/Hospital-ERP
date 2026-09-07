@@ -36,7 +36,7 @@ public class LeitoController {
             // Mensagem de erro em caso de falha no DB ou Service
             ra.addFlashAttribute("mensagemErro", "Erro ao salvar o leito: " + e.getMessage());
             // Retorna ao formulário para corrigir (mantendo os dados)
-            return "leito/formularioLeito"; 
+            return "leito/formularioLeito";
         }
         return "redirect:/leitos/listar";
     }
@@ -48,10 +48,10 @@ public class LeitoController {
     public String listar(Model model) {
         // 1. Obtém todos os leitos cadastrados
         List<Leito> leitos = leitoService.findAll();
-        
+
         // 2. Cria um mapa para armazenar o status (Ocupado/Disponível) de cada leito
         Map<Integer, String> statusLeitos = new HashMap<>();
-        
+
         for (Leito leito : leitos) {
             String status;
             // 3. Usa o LeitoService para verificar o status dinâmico (consultando Internacoes Ativas)
@@ -60,16 +60,16 @@ public class LeitoController {
             } else {
                 // Se não estiver ocupado por uma Internação Ativa, assume Disponível
                 // (Você pode adicionar lógica para 'Manutenção' aqui, se o Leito tiver um campo para isso)
-                status = "Disponível"; 
+                status = "Disponível";
             }
             // 4. Armazena o status no mapa usando o ID do Leito como chave
             statusLeitos.put(leito.getIdQuarto(), status);
         }
-        
+
         // 5. Adiciona a lista de leitos e o mapa de status ao Model
         model.addAttribute("leitos", leitos);
         model.addAttribute("statusLeitos", statusLeitos); // 🟢 CHAVE PRINCIPAL PARA O THYMELEAF
-        
+
         return "leito/listaLeito";
     }
 
@@ -81,7 +81,7 @@ public class LeitoController {
     }
 
     // --- EXCLUIR ---
-    @GetMapping("/excluir/{id}")
+    @PostMapping("/excluir/{id}")
     public String excluir(@PathVariable Integer id, RedirectAttributes ra) {
         try {
             leitoService.deleteById(id);
@@ -97,16 +97,16 @@ public class LeitoController {
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable Integer id, Model model, RedirectAttributes ra) {
         try {
-            Leito leito = leitoService.findById(id); 
-            
+            Leito leito = leitoService.findById(id);
+
             if (leito == null) {
                 ra.addFlashAttribute("mensagemErro", "Leito ID " + id + " não encontrado.");
                 return "redirect:/leitos/listar";
             }
-            
+
             model.addAttribute("leito", leito);
             return "leito/formularioLeito";
-            
+
         } catch (Exception e) {
             ra.addFlashAttribute("mensagemErro", "Erro ao buscar o leito para edição.");
             return "redirect:/leitos/listar";

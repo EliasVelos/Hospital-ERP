@@ -54,9 +54,9 @@
                     </div>
                     <div class="status-indicator"><span class="dot"></span> Online</div>
                 </div>
-                <a th:href="@{/logout}" class="logout-icon ms-2" title="Sair">
+                <form method="post" th:action="@{/logout}" class="d-inline"><button type="submit" class="logout-icon ms-2" title="Sair">
                     <i class="fas fa-sign-out-alt"></i>
-                </a>
+                </button></form>
             </div>
         </div>
     </div>
