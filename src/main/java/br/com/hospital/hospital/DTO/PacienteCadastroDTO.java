@@ -21,5 +21,6 @@ public class PacienteCadastroDTO {
 
     // --- DADOS DO USUÁRIO (LOGIN) ---
     private String username;
+    @lombok.ToString.Exclude
     private String password;
 }

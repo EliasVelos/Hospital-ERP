@@ -2,75 +2,58 @@ package br.com.hospital.hospital.service;
 
 import br.com.hospital.hospital.entity.Usuario;
 import br.com.hospital.hospital.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UsuarioService {
-    
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    public static final Set<String> ROLES = Set.of("ADMIN", "FUNCIONARIO", "MEDICO", "PACIENTE");
+    private final UsuarioRepository users;
+    private final PasswordEncoder passwords;
 
-    public Usuario fazerLogin(String username, String password) {
-        return usuarioRepository.findByUsernameAndPassword(username, password);
+    public UsuarioService(UsuarioRepository users, PasswordEncoder passwords) {
+        this.users = users;
+        this.passwords = passwords;
     }
-    
-    public Usuario fazerLoginComTipo(String username, String password, String tipoUsuario) {
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsernameAndPasswordWithRelations(username, password);
-        
-        if (usuarioOpt.isEmpty()) {
-            return null;
+
+    public List<Usuario> findAll() { return users.findAll(); }
+    public Optional<Usuario> findById(Integer id) { return users.findById(id); }
+
+    public String encodePassword(String password) {
+        if (password == null || password.isBlank() || password.length() < 12
+                || password.getBytes(StandardCharsets.UTF_8).length > 72) {
+            throw new IllegalArgumentException("Use uma senha com pelo menos 12 caracteres e até 72 bytes.");
         }
-        
-        Usuario usuario = usuarioOpt.get();
-        
-        // Verifica se o tipo de usuário corresponde
-        if (!usuario.getRole().equalsIgnoreCase(tipoUsuario)) {
-            throw new RuntimeException("Tipo de usuário incorreto. Você é um: " + usuario.getRole());
+        return passwords.encode(password);
+    }
+
+    @Transactional
+    public Usuario save(Usuario form) {
+        if (form.getRole() == null || !ROLES.contains(form.getRole())) {
+            throw new IllegalArgumentException("Selecione um perfil válido.");
         }
-        
-        // Verifica se a entidade específica existe (se aplicável)
-        Integer entidadeId = usuario.getEntidadeId();
-        if (entidadeId == null && !tipoUsuario.equalsIgnoreCase("ADMIN")) {
-            throw new RuntimeException("Perfil não encontrado para este tipo de usuário");
+        boolean creating = form.getId() == null;
+        Usuario user = creating ? new Usuario() : users.findById(form.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
+        if (creating) {
+            if (form.getUsername() == null || form.getUsername().isBlank() || form.getUsername().length() > 100) {
+                throw new IllegalArgumentException("Informe um login de até 100 caracteres.");
+            }
+            user.setUsername(form.getUsername().trim());
         }
-        
-        return usuario;
-    }
-    // ------------------------------------
-
-    // --- NOVOS MÉTODOS DE CRUD ---
-    
-    public List<Usuario> findAll() {
-        // Usamos findAll, mas sem JOIN FETCH explícito aqui para simplicidade. 
-        // O JPA pode carregar as entidades relacionadas lazymente quando acessadas na Controller/Template.
-        return usuarioRepository.findAll();
-    }
-
-    public Optional<Usuario> findById(Integer id) {
-        return usuarioRepository.findById(id);
-    }
-
-    public Usuario save(Usuario usuario) {
-        // **ATENÇÃO: Adicione aqui a lógica de criptografia de senha se estiver usando Spring Security!**
-        // Exemplo: usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        
-        // Se estiver editando, e o campo de senha vier vazio, não altere a senha antiga.
-        if (usuario.getId() != null && (usuario.getPassword() == null || usuario.getPassword().isEmpty())) {
-            usuarioRepository.findById(usuario.getId()).ifPresent(u -> usuario.setPassword(u.getPassword()));
+        // Atualiza somente os campos de acesso, preservando os vínculos do usuário.
+        user.setRole(form.getRole());
+        if (creating || (form.getPassword() != null && !form.getPassword().isEmpty())) {
+            user.setPassword(encodePassword(form.getPassword()));
         }
-
-        return usuarioRepository.save(usuario);
+        return users.save(user);
     }
 
-    public void deleteById(Integer id) {
-        // ATENÇÃO: Se o usuário tiver um Paciente/Medico/Funcionario, 
-        // a exclusão aqui pode falhar devido à FK. Você precisará tratar 
-        // a exclusão da entidade relacionada primeiro, ou configurar o cascade.
-        // Se a Entity relacionada for essencial, a exclusão do usuário deve ser impedida.
-        usuarioRepository.deleteById(id);
-    }
+    @Transactional
+    public void deleteById(Integer id) { users.deleteById(id); }
 }

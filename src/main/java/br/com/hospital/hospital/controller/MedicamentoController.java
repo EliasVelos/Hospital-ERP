@@ -38,36 +38,36 @@ public class MedicamentoController {
     // Listar
     @GetMapping("/listar")
     public String listar(
-            @PageableDefault(size = 10, sort = {"nomeMedicamento"}, direction = Sort.Direction.ASC) Pageable pageable, 
-            @RequestParam(required = false) String termoBusca, 
+            @PageableDefault(size = 10, sort = {"nomeMedicamento"}, direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(required = false) String termoBusca,
             Model model) {
-        
+
         Page<Medicamento> paginaMedicamentos;
- 
+
         // 🚨 CORREÇÃO DA LÓGICA DE BUSCA AQUI
         if (termoBusca != null && !termoBusca.trim().isEmpty()) {
             // 1. CHAMA MÉTODO PERSONALIZADO DE BUSCA (você precisa garantir que ele exista no Service)
             // Sugestão de nome: findByNomeMedicamentoContainingIgnoreCase
             paginaMedicamentos = medicamentoService.findByNomeMedicamentoContainingIgnoreCase(termoBusca, pageable);
-            
+
         } else {
             // 2. CHAMA O MÉTODO PADRÃO DE PAGINAÇÃO (deve ser: findAll(Pageable))
             paginaMedicamentos = medicamentoService.findAll(pageable);
         }
         // 🚨 FIM DA CORREÇÃO
- 
+
         // Adiciona a lista ao modelo (o Thymeleaf usa esta variável para iterar)
         model.addAttribute("medicamentos", paginaMedicamentos.getContent());
-        
+
         // Adiciona o objeto Page para a paginação no Thymeleaf
         model.addAttribute("paginaMedicamentos", paginaMedicamentos);
-        
+
         // Devolve o termo para preencher o campo de busca
-        model.addAttribute("termoBusca", termoBusca); 
-        
+        model.addAttribute("termoBusca", termoBusca);
+
         // CRUCIAL: Adiciona o Service para que o Thymeleaf possa chamar os métodos de Estoque/Validade
         model.addAttribute("medicamentoService", medicamentoService);
- 
+
         // Lógica para gerar os números de página para o Thymeleaf
         int totalPages = paginaMedicamentos.getTotalPages();
         if (totalPages > 0) {
@@ -76,7 +76,7 @@ public class MedicamentoController {
                 .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        
+
         // 🚨 ATENÇÃO: O nome do template deve ser ajustado para listaMedicamento.html ou listarMedicamentos.html
         return "medicamento/listaMedicamento"; // Ajustei para o nome que você usou anteriormente
     }
@@ -89,7 +89,7 @@ public class MedicamentoController {
     }
 
     // Excluir
-    @GetMapping("/excluir/{id}")
+    @PostMapping("/excluir/{id}")
     public String excluir(@PathVariable Integer id) {
         medicamentoService.desativar(id);
         return "redirect:/medicamentos/listar";

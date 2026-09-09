@@ -8,6 +8,7 @@ public class MedicoCadastroDTO {
 
     // 1. Dados do Usuário (para o Login)
     private String username;
+    @lombok.ToString.Exclude
     private String password;
     
     // 2. Dados do Médico

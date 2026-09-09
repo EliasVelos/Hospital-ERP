@@ -29,23 +29,23 @@ public class RelatorioController {
         model.addAttribute("relatorios", relatorios);
         return "relatorio/listaRelatorio";
     }
-    
+
     // 1. ABRIR FORMULÁRIO (Exibe o formulário de datas com a data de inauguração pré-preenchida)
     @GetMapping("/criar")
     public String criarform(Model model) {
-        
+
         // Define a data de inauguração: 08/12/2003
-        LocalDate dataInauguracao = LocalDate.of(2003, 12, 8); 
-        
+        LocalDate dataInauguracao = LocalDate.of(2003, 12, 8);
+
         Relatorio relatorio = new Relatorio();
-        
+
         // Inicializa o período com a data de inauguração e a data atual
         relatorio.setDataInicioPeriodo(dataInauguracao);
         relatorio.setDataFimPeriodo(LocalDate.now());
 
         model.addAttribute("relatorio", relatorio);
-        
-        return "relatorio/formularioRelatorio"; 
+
+        return "relatorio/formularioRelatorio";
     }
 
     // 2. GERAR NOVO RELATÓRIO (Passa as datas do formulário para o Service)
@@ -77,7 +77,7 @@ public class RelatorioController {
     }
 
     // Excluir
-    @GetMapping("/excluir/{id}")
+    @PostMapping("/excluir/{id}")
     public String excluir(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
             relatorioService.deleteById(id);
