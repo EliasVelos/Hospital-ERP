@@ -20,23 +20,17 @@ public class ConsultaService{
     private ConsultaRepository consultaRepository;
     @Autowired
     private AtendimentoRepository atendimentoRepository;
-    //Salvar
     public Consulta save(Consulta consulta) {
         return consultaRepository.save(consulta);
     }
-
-    //Listar
     public List<Consulta> findAll(){
         return consultaRepository.findAll();
     }
-
-    //Excluir
+    @org.springframework.transaction.annotation.Transactional
     public void deleteById(Integer id){
         atendimentoRepository.deleteByConsulta_IdConsulta(id);
         consultaRepository.deleteById(id);
     }
-
-    //Editar
     public Consulta findById(Integer id){
         return consultaRepository.findById(id).orElse(null);
     }
@@ -74,12 +68,16 @@ public List<Consulta> buscarPorPaciente(Paciente paciente) {
 
         return consultaRepository.buscarConsultasDoDia(inicio, fim);
     }
-
-
-// Novo método que traz a consulta JUNTO com o atendimento
 public List<Consulta> buscarTodasComAtendimento() {
-    // Esse método deve chamar aquele que você criou no Repository
-    // Se no repository você chamou de 'findAllWithAtendimento', use assim:
-    return consultaRepository.findAllWithAtendimento(); 
+    return consultaRepository.findAllWithAtendimento();
 }
+
+    public List<Consulta> buscarDoMedico(Integer medicoId) {
+        return consultaRepository.findByMedicoId(medicoId);
+    }
+
+    public List<Consulta> buscarDoMedicoHoje(Integer medicoId) {
+        LocalDate hoje = LocalDate.now();
+        return consultaRepository.findDayByMedicoId(medicoId, hoje.atStartOfDay(), hoje.plusDays(1).atStartOfDay());
+    }
 }

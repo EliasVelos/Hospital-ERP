@@ -17,6 +17,9 @@ import br.com.hospital.hospital.repository.UsuarioRepository;
 public class FuncionarioService {
 
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
     private FuncionarioRepository funcionarioRepository;
 
     @Autowired
@@ -24,54 +27,47 @@ public class FuncionarioService {
 
     @Transactional
     public Funcionario cadastrarNovoFuncionario(FuncionarioCadastroDTO dto) {
-
-        // 1. SALVAR USUÁRIO
         Usuario novoUsuario = new Usuario();
         novoUsuario.setUsername(dto.getUsername());
-        novoUsuario.setPassword(dto.getPassword());
+        novoUsuario.setPassword(usuarioService.encodePassword(dto.getPassword()));
         novoUsuario.setRole("FUNCIONARIO");
 
         Usuario usuarioSalvo = usuarioRepository.save(novoUsuario);
-
-
-        // 2. SALVAR PACIENTE
         Funcionario novoFuncionario = new Funcionario();
 
         novoFuncionario.setNome(dto.getNome());
         novoFuncionario.setCpfFuncionario(dto.getCpfFuncionario());
         novoFuncionario.setCargo(dto.getCargo());
         novoFuncionario.setSetor(dto.getSetor());
-
-        // Ligar o paciente ao usuário
         novoFuncionario.setUsuario(usuarioSalvo);
 
         Funcionario funcionarioSalvo = funcionarioRepository.save(novoFuncionario);
 
-        // 3. Parte de atualizar o usuário foi removida
-        // Porque o Usuario NÃO possui relacionamento com Paciente.
-        // Se quiser tornar bidirecional, basta pedir.
-
         return funcionarioSalvo;
     }
-
-    //Salvar
     public Funcionario save(Funcionario funcionario) {
         return funcionarioRepository.save(funcionario);
     }
-
-    //Listar
     public List<Funcionario> findAll(){
         return funcionarioRepository.findAll();
     }
-
-    //Excluir
     public void deleteById(Integer id){
         funcionarioRepository.deleteById(id);
     }
-
-    //Editar (Busca por ID, conforme o exemplo)
     public Optional<Funcionario> findById(Integer id) {
     return funcionarioRepository.findById(id);
 }
 
+
+    @Transactional
+    public Funcionario atualizarFuncionario(Funcionario form) {
+        if (form.getIdFuncionario() == null) throw new IllegalArgumentException("Funcionário não encontrado.");
+        Funcionario existing = funcionarioRepository.findById(form.getIdFuncionario())
+                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
+        existing.setNome(form.getNome());
+        existing.setCpfFuncionario(form.getCpfFuncionario());
+        existing.setCargo(form.getCargo());
+        existing.setSetor(form.getSetor());
+        return funcionarioRepository.save(existing);
+    }
 }

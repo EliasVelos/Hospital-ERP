@@ -1,94 +1,44 @@
 package br.com.hospital.hospital.controller;
 
 import br.com.hospital.hospital.entity.Atendimento;
-import br.com.hospital.hospital.entity.Consulta;
-import br.com.hospital.hospital.service.AtendimentoService;
-import br.com.hospital.hospital.service.ConsultaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.hospital.hospital.security.HospitalPrincipal;
+import br.com.hospital.hospital.service.ClinicalAccessService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
-
 @Controller
 public class AtendimentoController {
+    private final ClinicalAccessService clinical;
 
-    @Autowired
-    private ConsultaService consultaService;
+    public AtendimentoController(ClinicalAccessService clinical) { this.clinical = clinical; }
 
-    @Autowired
-    private AtendimentoService atendimentoService;
+    @InitBinder("atendimento")
+    void clinicalFields(WebDataBinder binder) {
+        binder.setAllowedFields("queixaPrincipal", "exameFisico", "diagnostico", "planoTerapeutico", "prescricaoMedicamentos");
+    }
 
     @GetMapping("/atendimento/iniciar/{id}")
-public String iniciarAtendimento(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
-
-    Optional<Consulta> optionalConsulta = consultaService.buscarConsultaPorId(id);
-
-    if (optionalConsulta.isEmpty()) {
-        redirectAttributes.addFlashAttribute("mensagemErro", "Consulta não encontrada.");
-        return "redirect:/consultas/listar";
+    public String iniciar(@PathVariable Integer id, Model model, @AuthenticationPrincipal HospitalPrincipal user) {
+        model.addAttribute("consulta", clinical.consultation(id, user));
+        model.addAttribute("atendimento", new Atendimento());
+        return "medicoHome/formularioAtendimento";
     }
 
-    Consulta consulta = optionalConsulta.get();
-
-    Atendimento atendimento = new Atendimento();
-    atendimento.setConsulta(consulta); // ← Aqui está o ajuste
-
-    model.addAttribute("consulta", consulta);
-    model.addAttribute("atendimento", atendimento);
-
-    return "medicoHome/formularioAtendimento";
-}
-
-@PostMapping("/atendimento/salvar/{idConsulta}") // Adicione o ID da Consulta na URL ou como @RequestParam
-public String salvarAtendimento(@PathVariable("idConsulta") Integer idConsulta, 
-                                @ModelAttribute Atendimento atendimento, // Use @ModelAttribute para ligar os campos do form
-                                RedirectAttributes redirectAttributes) {
-    
-    try {
-        // 1. Busque a Consulta persistente do banco (Resolvendo o erro 'null or transient value')
-        Optional<Consulta> optionalConsulta = consultaService.buscarConsultaPorId(idConsulta);
-
-        if (optionalConsulta.isEmpty()) {
-             throw new Exception("Consulta associada não encontrada.");
-        }
-        
-        // 2. Vincule a Consulta persistente ao Atendimento
-        atendimento.setConsulta(optionalConsulta.get());
-        
-        // 3. Salva o atendimento
-        atendimentoService.salvarAtendimento(atendimento);
-
-        // 4. Atualiza o status da consulta associada (Agora o ID é garantido)
-        consultaService.atualizarStatusConsulta(
-            idConsulta, // Use o ID da URL, que é seguro
-            "ATENDIDA"
-        );
-
-        redirectAttributes.addFlashAttribute("mensagemSucesso", "Atendimento salvo e consulta concluída!");
-    } catch (Exception e) {
-        // ... tratamento de erro
-        redirectAttributes.addFlashAttribute("mensagemErro",
-            "Erro ao salvar o atendimento: " + e.getMessage());
+    @PostMapping("/atendimento/salvar/{idConsulta}")
+    public String salvar(@PathVariable Integer idConsulta, @ModelAttribute Atendimento atendimento,
+            @AuthenticationPrincipal HospitalPrincipal user, RedirectAttributes redirect) {
+        clinical.record(idConsulta, atendimento, user);
+        redirect.addFlashAttribute("mensagemSucesso", "Atendimento registrado.");
+        return "redirect:" + ("MEDICO".equals(user.getRole()) ? "/consultas/minhas" : "/consultas/listar");
     }
 
-    return "redirect:/consultas/listar";
-}
-@GetMapping("/atendimento/detalhes/{idAtendimento}")
-public String detalhesAtendimento(@PathVariable("idAtendimento") Integer idAtendimento, Model model, RedirectAttributes redirectAttributes) {
-
-    Optional<Atendimento> optionalAtendimento = atendimentoService.findById(idAtendimento); // Assumindo que este método existe no seu Service
-
-    if (optionalAtendimento.isEmpty()) {
-        redirectAttributes.addFlashAttribute("mensagemErro", "Atendimento não encontrado.");
-        return "redirect:/consultas/listar";
+    @GetMapping("/atendimento/detalhes/{idAtendimento}")
+    public String detalhes(@PathVariable Integer idAtendimento, Model model, @AuthenticationPrincipal HospitalPrincipal user) {
+        model.addAttribute("atendimento", clinical.attendance(idAtendimento, user));
+        return "medicoHome/detalhesAtendimento";
     }
-
-    Atendimento atendimento = optionalAtendimento.get();
-    model.addAttribute("atendimento", atendimento);
-    
-    return "medicoHome/detalhesAtendimento"; // Nome do arquivo HTML criado
-}
 }

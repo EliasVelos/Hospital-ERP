@@ -34,4 +34,10 @@ List<Consulta> buscarConsultasDoDia(@Param("inicio") LocalDateTime inicio,
                                     // Use JOIN FETCH para carregar a entidade 'atendimento' junto com a 'consulta'
     @Query("SELECT c FROM Consulta c LEFT JOIN FETCH c.atendimento")
     List<Consulta> findAllWithAtendimento();
+
+    @Query("select c from Consulta c join fetch c.paciente join fetch c.medico left join fetch c.atendimento where c.medico.idMedico = :medicoId order by c.dataehoraConsulta")
+    List<Consulta> findByMedicoId(@Param("medicoId") Integer medicoId);
+
+    @Query("select c from Consulta c join fetch c.paciente where c.medico.idMedico = :medicoId and c.dataehoraConsulta >= :inicio and c.dataehoraConsulta < :fim order by c.dataehoraConsulta")
+    List<Consulta> findDayByMedicoId(@Param("medicoId") Integer medicoId, @Param("inicio") LocalDateTime inicio, @Param("fim") LocalDateTime fim);
 }

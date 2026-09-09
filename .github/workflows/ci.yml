@@ -1,0 +1,28 @@
+name: Verificação do Hospital-ERP
+on:
+  push:
+    branches: [main, 'fix/**']
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Testes e empacotamento
+        run: bash ./mvnw -B verify
+      - name: Relatórios de teste
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hospital-testes
+          path: target/surefire-reports/
+          retention-days: 7

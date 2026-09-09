@@ -28,11 +28,11 @@ public class InternacaoController {
 
     @Autowired
     private InternacaoService internacaoService;
-    
-    @Autowired 
+
+    @Autowired
     private PacienteService pacienteService;
-    
-    @Autowired 
+
+    @Autowired
     private LeitoService leitoService;
 
     // --- 1. SALVAR (CREATE & UPDATE) ---
@@ -42,36 +42,36 @@ public String salvar(@ModelAttribute Internacao internacao, RedirectAttributes r
     try {
         // 🚨 VALIDAÇÃO CORRIGIDA: Usa MODEL para a mensagem de erro
         if (internacaoService.existeInternacaoAtivaParaPaciente(internacao)) {
-            
+
             // 1. Usa MODEL para passar a mensagem de erro (POIS NÃO HAVERÁ REDIRECT)
             String nomePaciente = internacao.getPaciente() != null ? internacao.getPaciente().getNomePaciente() : "Selecionado";
             model.addAttribute("mensagemErro", "Erro: O Paciente " + nomePaciente + " já possui uma internação ATIVA.");
-            
+
             // 2. Recarregar os dados necessários para o formulário
             // O objeto 'internacao' já está no Model, mas é importante garantir as listas:
             model.addAttribute("pacientes", pacienteService.findAll());
-            
+
             // Recarrega Leitos Disponíveis com a mesma lógica do editarForm
-            List<Integer> leitosOcupadosIds = internacaoService.findLeitoIdsOcupados(); 
-            
+            List<Integer> leitosOcupadosIds = internacaoService.findLeitoIdsOcupados();
+
             // Somente tenta remover o leito atual se ele não for nulo, evitando NullPointerException
             if (internacao.getLeito() != null && internacao.getLeito().getIdQuarto() != null) {
                  // Remove o leito atual da lista de ocupados (se estiver lá)
                  leitosOcupadosIds.remove(internacao.getLeito().getIdQuarto());
             }
-            
+
             model.addAttribute("leitosDisponiveis", leitoService.findAllExcludingIds(leitosOcupadosIds));
 
             // 3. Retorna a view diretamente para renderizar a mensagem de erro
             return "internacao/formularioInternacao";
         }
-        
+
         // --- Lógica de SALVAR em caso de SUCESSO ---
         internacaoService.save(internacao);
-        String mensagem = (internacao.getIdInternacao() == null) 
-                          ? "Internação registrada com sucesso!" 
+        String mensagem = (internacao.getIdInternacao() == null)
+                          ? "Internação registrada com sucesso!"
                           : "Internação atualizada com sucesso!";
-        
+
         // Usar REDIRECTATTRIBUTES para a mensagem de sucesso (POIS HAVERÁ REDIRECT)
         ra.addFlashAttribute("mensagemSucesso", mensagem);
 
@@ -96,24 +96,24 @@ public String salvar(@ModelAttribute Internacao internacao, RedirectAttributes r
     @GetMapping("/criar")
     public String criarForm(Model model) {
         model.addAttribute("internacao", new Internacao());
-        
+
         // Carrega a lista de pacientes
         model.addAttribute("pacientes", pacienteService.findAll());
 
         // 🚨 CORREÇÃO: Lógica de Disponibilidade do Leito (Para Novo Registro)
         // 1. Obtém IDs de leitos ocupados. (Necessário criar este método no InternacaoService)
-        List<Integer> leitosOcupadosIds = internacaoService.findLeitoIdsOcupados(); 
-        
+        List<Integer> leitosOcupadosIds = internacaoService.findLeitoIdsOcupados();
+
         // 2. Filtra todos os leitos, excluindo os ocupados.
-        List<Leito> leitosDisponiveis = leitoService.findAllExcludingIds(leitosOcupadosIds); 
-        
+        List<Leito> leitosDisponiveis = leitoService.findAllExcludingIds(leitosOcupadosIds);
+
         model.addAttribute("leitosDisponiveis", leitosDisponiveis);
-        
+
         return "internacao/formularioInternacao";
     }
 
     // --- 4. EXCLUIR (DELETE) ---
-    @GetMapping("/excluir/{id}")
+    @PostMapping("/excluir/{id}")
     public String excluir(@PathVariable Integer id, RedirectAttributes ra) { // Adicionado RedirectAttributes
         try {
             internacaoService.deleteById(id);
@@ -133,30 +133,30 @@ public String salvar(@ModelAttribute Internacao internacao, RedirectAttributes r
             ra.addFlashAttribute("mensagemErro", "Internação não encontrada.");
             return "redirect:/internacoes/listar";
         }
-        
+
         model.addAttribute("internacao", internacao);
         model.addAttribute("pacientes", pacienteService.findAll());
 
         // 🚨 CORREÇÃO: Lógica de Disponibilidade do Leito (Para Edição)
-        
+
         // 1. Obtém IDs de todos os leitos ocupados
-        List<Integer> leitosOcupadosIds = internacaoService.findLeitoIdsOcupados(); 
-        
+        List<Integer> leitosOcupadosIds = internacaoService.findLeitoIdsOcupados();
+
         // 2. Garante que o leito sendo editado NÃO seja contado como ocupado
         if (internacao.getLeito() != null) {
             // Remove o ID do leito atual para que ele apareça na lista de seleção.
-            leitosOcupadosIds.remove(internacao.getLeito().getIdQuarto()); 
+            leitosOcupadosIds.remove(internacao.getLeito().getIdQuarto());
         }
 
         // 3. Busca todos os leitos, excluindo os restantes ocupados
         List<Leito> leitosDisponiveis = leitoService.findAllExcludingIds(leitosOcupadosIds);
-        
+
         model.addAttribute("leitosDisponiveis", leitosDisponiveis);
-        
+
         return "internacao/formularioInternacao";
     }
     // 🚨 NOVO MÉTODO: DAR ALTA (FINALIZA INTERNAÇÃO E LIBERA LEITO) 🚨
-    @GetMapping("/darAlta/{id}")
+    @PostMapping("/darAlta/{id}")
     public String darAlta(@PathVariable Integer id, RedirectAttributes ra) {
         try {
             Internacao internacao = internacaoService.findById(id);
@@ -165,12 +165,12 @@ public String salvar(@ModelAttribute Internacao internacao, RedirectAttributes r
                 ra.addFlashAttribute("mensagemErro", "Internação não encontrada.");
                 return "redirect:/internacoes/listar";
             }
-            
+
             if (internacao.getDataAlta() != null) {
                 ra.addFlashAttribute("mensagemErro", "O paciente já possui alta registrada.");
                 return "redirect:/internacoes/listar";
             }
-            
+
             // 1. REGISTRA A DATA DE ALTA E ATUALIZA O STATUS DA INTERNAÇÃO
             internacao.setDataAlta(LocalDateTime.now());
             internacao.setStatus("Concluída"); // 🚨 Atualiza o status
@@ -179,12 +179,12 @@ public String salvar(@ModelAttribute Internacao internacao, RedirectAttributes r
             // 2. ATUALIZA O STATUS DO LEITO PARA 'DISPONÍVEL'
             if (internacao.getLeito() != null) {
                 Leito leito = internacao.getLeito();
-                leito.setStatus("Disponível"); 
+                leito.setStatus("Disponível");
                 leitoService.save(leito);
             }
 
-            ra.addFlashAttribute("mensagemSucesso", 
-                                 "Alta do paciente " + internacao.getPaciente().getNomePaciente() + 
+            ra.addFlashAttribute("mensagemSucesso",
+                                 "Alta do paciente " + internacao.getPaciente().getNomePaciente() +
                                  " registrada com sucesso! O Leito N° " + internacao.getLeito().getNumero() + " foi liberado.");
 
         } catch (Exception e) {

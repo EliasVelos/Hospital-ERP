@@ -32,30 +32,20 @@ public class ConsultaController {
 
     @Autowired
     private MedicoService medicoService;
-
-    // OBS: Removi o AtendimentoRepository daqui. 
-    // O ideal é o Controller falar apenas com Services, e não direto com Repository.
-
-    // Salvar
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Consulta consulta) {
         consultaService.save(consulta);
         return "redirect:/consultas/listar";
     }
-
-    // Listar (CORRIGIDO AQUI)
     @GetMapping("/listar")
-    public String listar(Model model) {
-        // AQUI ESTÁ A MUDANÇA MÁGICA:
-        // Em vez de .findAll(), usamos o método que traz o Atendimento junto.
-        // Certifique-se de ter criado esse método no Service conforme o passo 1.
+    public String listar(Model model, org.springframework.security.core.Authentication authentication) {
         List<Consulta> consultas = consultaService.buscarTodasComAtendimento();
-        
+
         model.addAttribute("consultas", consultas);
+        model.addAttribute("canManage", true);
+        model.addAttribute("canAttend", authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
         return "consulta/listaConsulta";
     }
-
-    // Criar
     @GetMapping("/criar")
     public String criarform(Model model) {
         model.addAttribute("consulta", new Consulta());
@@ -63,17 +53,11 @@ public class ConsultaController {
         model.addAttribute("medicos", medicoService.findAll());
         return "consulta/formularioConsulta";
     }
-
-    // Excluir
-    @GetMapping("/excluir/{id}")
+    @PostMapping("/excluir/{id}")
     public String excluir(@PathVariable("id") Integer id) {
-        // Remove os atendimentos antes para não dar erro de chave estrangeira
-        atendimentoService.excluirAtendimentosDaConsulta(id);
         consultaService.deleteById(id);
         return "redirect:/consultas/listar";
     }
-
-    // Editar
     @GetMapping("/editar/{id}")
     public String editarForm(@PathVariable("id") Integer id, Model model) {
         Consulta consulta = consultaService.findById(id);
@@ -81,5 +65,14 @@ public class ConsultaController {
         model.addAttribute("pacientes", pacienteService.findAll());
         model.addAttribute("medicos", medicoService.findAll());
         return "consulta/formularioConsulta";
+    }
+
+    @GetMapping("/minhas")
+    public String minhas(Model model,
+            @org.springframework.security.core.annotation.AuthenticationPrincipal br.com.hospital.hospital.security.HospitalPrincipal user) {
+        model.addAttribute("consultas", consultaService.buscarDoMedico(user.getEntityId()));
+        model.addAttribute("canManage", false);
+        model.addAttribute("canAttend", true);
+        return "consulta/listaConsulta";
     }
 }
